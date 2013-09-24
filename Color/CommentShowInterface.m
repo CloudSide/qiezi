@@ -14,6 +14,7 @@
 @implementation CommentShowInterface
 @synthesize delegate = _delegate;
 
+//根据开始时间,mediaId查询评论列表
 -(void)getCommentListByStartTime:(NSTimeInterval)startTime mediaId:(NSString *)mediaId;
 {
     isForPullRefresh = NO;
@@ -31,6 +32,7 @@
     [self connect];
 }
 
+//根据结束时间,mediaId查询评论列表---用于下拉刷新
 -(void)getCommentListByEndTime:(NSTimeInterval)endTime mediaId:(NSString *)mediaId;
 {
     isForPullRefresh = YES;
@@ -55,9 +57,44 @@
     [super dealloc];
 }
 
+//{
+//    "returncode": "0",
+//    "content": {
+//        "list": [
+//                 {
+//                     "id": "155",
+//                     "ctime": "1339306139",
+//                     "content": "标哥，有评论啦~",
+//                    "feedId": {
+//                        "name": "test111",
+//                        "avatar": "avatar/580000016/580000016_1341394263.jpg",
+//                        "userId": "580000016"
+//                    },
+//                     "avatar": "http://12qiezi-12qiezi.stor.sinaapp.com/avatar/580000012/580000012_1339213555.jpg",
+//                     "name": "L"
+//                     "userId":"12121212"
+//                 },
+//                 {
+//                     "id": "153",
+//                     "ctime": "1339304104",
+//                     "content": "good",
+//                    "feedId": {
+//                        "name": "test111",
+//                        "avatar": "avatar/580000016/580000016_1341394263.jpg",
+//                        "userId": "580000016"
+//                    },
+//                     "avatar": "http://12qiezi-12qiezi.stor.sinaapp.com/avatar/580000012/580000012_1339213555.jpg",
+//                     "name": "L"
+//                     "userId":"12121212"
+//                 }
+//                 ]
+//    }
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
-        NSMutableArray *commentArray = [[NSMutableArray alloc] init];
+        NSMutableArray *commentArray = [[NSMutableArray alloc] init];//返回结果
         
         NSDictionary *content = [responseDict objectForKey:@"content"];
         NSArray *listArray = [content objectForKey:@"list"];

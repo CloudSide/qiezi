@@ -166,6 +166,18 @@
     self.mscrollView.contentSize = CGSizeMake(self.view.frame.size.width , 
                                               self.view.frame.size.height);
     
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 20)];
+        view.backgroundColor = [UIColor blackColor];
+        [self.view addSubview:view];
+        [view release];
+        
+        self.mscrollView.frame = CGRectMake(0, 20, 320, self.view.bounds.size.height-54-20);
+        [self.mscrollView setContentInset:UIEdgeInsetsMake(-20, 0, 0, 0)];
+    }
+#endif
+    
     //获取历史列表
     self.mCommentShowInterface = [[CommentShowInterface alloc] init];
     self.mCommentShowInterface.delegate = self;
@@ -291,7 +303,7 @@
     }
 }
 
-
+//添加评论列表
 -(void)appendCommentList:(NSArray *)commentArray{
     if ([commentArray count] > 0) {
         CGFloat offset = self.someLikeThis.frame.size.height + self.someLikeThis.frame.origin.y;
@@ -304,13 +316,13 @@
             commentView.tag = 99;
             commentView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
             
-            
+            //commentView点击事件
             UITapGestureRecognizer *commentViewTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(createComment:)];
             [commentViewTap setNumberOfTapsRequired:1];
             [commentView addGestureRecognizer:commentViewTap];
             [commentViewTap release];
             
-            
+            //头像
             EGOImageView *avatar = [[EGOImageView alloc] init];
             avatar.userInteractionEnabled = YES;
             avatar.tag = self.commentList.count + i;
@@ -320,13 +332,13 @@
             avatar.layer.borderColor = [UIColor whiteColor].CGColor;
             [commentView addSubview:avatar];
             
-            
+            //头像点击事件
             UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goHomePage:)];
             [headerTap setNumberOfTapsRequired:1];
             [avatar addGestureRecognizer:headerTap];
             [headerTap release];
             
-            
+            //时间
             UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 105,0,
                                                                            100,
                                                                            13)];
@@ -337,7 +349,7 @@
             [commentView addSubview:dateLabel];
             [dateLabel release];
 
-            
+            //人名
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(45,0,
                                                                            self.view.frame.size.width,
                                                                            13)];
@@ -350,14 +362,14 @@
             
             [nameLabel release];
             
-            
+            //评论
             UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(45,15,
                                                                               self.view.frame.size.width - 45 - 4,
                                                                               13)];
             contentLabel.numberOfLines = 10;
             contentLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
             contentLabel.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
-            
+            //计算评论内容的size
             NSString *content = nil;
             if (cm.feedUser != nil) {
                 content = [NSString stringWithFormat:@"回复%@:  %@",cm.feedUser.name,cm.content];
@@ -494,7 +506,7 @@
         _hasMorePage = NO;
     }else{
         [self appendCommentList:mediaArray];
-        
+        //addObjectsFromArray 一定要在appendCommentList调用之后调用，因为要计算用户头像tag值，用于索引self.commentList的位置
         [self.commentList addObjectsFromArray:mediaArray];
     }
     
@@ -506,7 +518,7 @@
 
 -(void)getCommentListDidFailed:(NSString *)errorMsg
 {
-    
+    //TODO 获取回忆列表失败
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"获取评论列表失败" 
 													   message:errorMsg 
 													  delegate:nil
@@ -521,7 +533,7 @@
     _isGettingNextPage = NO;
 }
 
-
+//用于下拉刷新的delegate
 -(void)getCommentListByTimeDidFinished:(NSArray *)mediaArray{
     if (mediaArray.count > 0) {
         [self.commentList insertObjects:mediaArray
@@ -554,7 +566,7 @@
 
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
-
+//下拉刷新
 - (void)reloadTableViewDataSource{
 	
 	//  should be calling your tableviews data source model to reload
@@ -565,14 +577,14 @@
     self.mCommentShowInterfaceForPull.delegate = self;
     NSTimeInterval time = 0;
     if ([self.commentList count]>0) {
-        CommentModel *cm = [self.commentList objectAtIndex:0];
+        CommentModel *cm = [self.commentList objectAtIndex:0];//照片
         time = cm.ctime.timeIntervalSince1970 + 1;
     }
     
     [self.mCommentShowInterfaceForPull getCommentListByEndTime:time mediaId:self.media.mid];
 }
 
-
+//刷新完成后通知下拉刷新view
 - (void)doneLoadingTableViewData{
 	
 	//  model should call this when its done loading

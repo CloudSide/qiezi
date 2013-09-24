@@ -37,6 +37,14 @@
     }
     return self;
 }
+
+#pragma mark send comment
+//-(void)sendCommentByMediaId:(NSString *)mid content:(NSString *)content{
+//    self.mCreateCommentInterface = [[[CreateCommentInterface alloc] init] autorelease];
+//    self.mCreateCommentInterface.delegate = self;
+//    [self.mCreateCommentInterface createCommentByMediaId:mid content:content];
+//}
+
 -(void)sendGoodByMediaId:(NSString *)mid good:(NSInteger)good{
     self.mCreateCommentInterface = [[[CreateCommentInterface alloc] init] autorelease];
     self.mCreateCommentInterface.delegate = self;
@@ -49,7 +57,7 @@
         [self sendGoodByMediaId:self.mediaModel.mid good:-1];//取消顶
         self.likeNumLabel.text = [NSString stringWithFormat:@"%d",[self.likeNumLabel.text intValue] - 1];
     }else{
-        [self sendGoodByMediaId:self.mediaModel.mid good:1];
+        [self sendGoodByMediaId:self.mediaModel.mid good:1];//顶
         self.likeNumLabel.text = [NSString stringWithFormat:@"%d",[self.likeNumLabel.text intValue] + 1];
     }
     
@@ -108,7 +116,7 @@
 
 -(void)videoTapedAction
 {
-    self.playVideoOverlay.alpha = 0;
+    self.playVideoOverlay.alpha = 0;//隐藏播放按钮
     
     NSString * videoPath=[ NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory , NSUserDomainMask , YES ) objectAtIndex : 0 ];
     videoPath=[[videoPath stringByAppendingPathComponent : @"video" ] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mov",self.mediaModel.mid]];
@@ -147,7 +155,8 @@
     _mediaModel = [mm retain];
     
     if (self.mediaModel.mediaType == 1) {
-        self.playVideoOverlay.alpha = 1;
+        self.playVideoOverlay.alpha = 1;//显示播放按钮
+        
         self.photoImageView.imageURL = [NSURL URLWithString:self.mediaModel.thumbnailUrl];
         self.photoImageView.userInteractionEnabled = YES;
         UITapGestureRecognizer *videoTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(videoTapedAction)];
@@ -158,11 +167,14 @@
     }else{
         self.photoImageView.imageURL = [NSURL URLWithString:self.mediaModel.originalUrl];
         self.photoImageView.userInteractionEnabled = YES;
+        //commentViewGroup点击事件
         UITapGestureRecognizer *photoTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goCommentList)];
         [photoTap setNumberOfTapsRequired:1];
         [self.photoImageView addGestureRecognizer:photoTap];
         [photoTap release];
     }
+    
+    //若不是自己将头像放在屏幕左侧
     if ([[MySingleton sharedSingleton].userId isEqualToString:self.mediaModel.owner.userId]) {
         self.peopleIconImageView.frame = CGRectMake(280, self.peopleIconImageView.frame.origin.y,
                                                     self.peopleIconImageView.frame.size.width,
@@ -175,14 +187,21 @@
                                                     self.peopleIconImageView.frame.size.height);
         self.trashBtn.alpha = 0;
     }
+    
+    //头像
     self.peopleIconImageView.imageURL = [NSURL URLWithString:self.mediaModel.owner.avatarUrl];
+    //朋友头像点击事件
     UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goHomePage)];
     [headerTap setNumberOfTapsRequired:1];
     [self.peopleIconImageView addGestureRecognizer:headerTap];
     [headerTap release];
-    self.nameLabel.text = [NSString stringWithFormat:@"%@\t%@",self.mediaModel.owner.name,self.mediaModel.city];
+    //人名
+    self.nameLabel.text = [NSString stringWithFormat:@"%@\t%@",self.mediaModel.owner.name,self.mediaModel.city];    
+    //时间
     self.dateLabel.text = [self.mediaModel.ctime getDynamicDateStringFromNow];
+    
     self.likeNumLabel.text = [NSString stringWithFormat:@"%d",self.mediaModel.goodCount];
+    
     if ([mm.commentArray count] > 0) {
         for (CommentModel *cm in mm.commentArray) {
             UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(0,
@@ -190,6 +209,7 @@
                                                                            self.frame.size.width,
                                                                            0)];
             commentView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
+            
             //人名
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,
                                                                            self.frame.size.width,
@@ -198,15 +218,20 @@
             nameLabel.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
             nameLabel.text = cm.ownerName;
             [commentView addSubview:nameLabel];
+            
             CGRect commentViewFrame = commentView.frame;
             commentViewFrame.size.height = nameLabel.frame.size.height;
+            
             [nameLabel release];
+            
+            //评论
             UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,10,
                                                                            240 - 4,
                                                                            13)];
             contentLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
             contentLabel.numberOfLines = 10;
             contentLabel.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
+            //计算评论内容的size
             NSString *content = nil;
             if (cm.feedUser != nil) {
                 content = [NSString stringWithFormat:@"回复%@:  %@",cm.feedUser.name,cm.content];
@@ -221,10 +246,16 @@
             contentLabel.frame = CGRectMake(0, 15, countLabelFontSize.width, countLabelFontSize.height);
             contentLabel.text = content;
             [commentView addSubview:contentLabel];
+            
             commentViewFrame.size.height += contentLabel.frame.size.height;
             commentView.frame = commentViewFrame;
+            
             [contentLabel release];
+            
+            
             [self.commentViewGroup addSubview:commentView];
+            
+            
             CGRect commentViewGroupFrame = self.commentViewGroup.frame;
             commentViewGroupFrame.size.height += commentView.frame.size.height + 8;
             self.commentViewGroup.frame = commentViewGroupFrame;
@@ -241,17 +272,23 @@
             
             [commentView release];
         }
+        
+        
     }
+    
+    //commentViewGroup点击事件
     UITapGestureRecognizer *commentTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goCommentList)];
     [commentTap setNumberOfTapsRequired:1];
     [self.commentViewGroup superview].userInteractionEnabled = YES;
     [[self.commentViewGroup superview] addGestureRecognizer:commentTap];
     [commentTap release];
+    
 }
 
 #pragma mark - CreateCommentInterfaceDelegate 
 -(void)createCommentDidFinished:(NSString *)mediaId content:(NSString *)content{
     if (content.length>0) {
+        //发送notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"addComment" 
                                                             object:nil 
                                                           userInfo:[NSDictionary dictionaryWithObjectsAndKeys:content,@"content",mediaId,@"mediaId",nil]];
@@ -277,6 +314,7 @@
 
 #pragma mark - CommentDelegate
 -(void)sendComment:(NSString *)comment feedId:(NSString *)fid{
+//    [self sendCommentByMediaId:self.mediaModel.mid content:comment];
     self.mCreateCommentInterface = [[[CreateCommentInterface alloc] init] autorelease];
     self.mCreateCommentInterface.delegate = self;
     [self.mCreateCommentInterface createCommentByMediaId:self.mediaModel.mid content:comment feedId:fid];
@@ -286,8 +324,31 @@
 -(void)downloadFileDidFinished{
     NSString * videoPath=[ NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory , NSUserDomainMask , YES ) objectAtIndex : 0 ];
     videoPath=[[videoPath stringByAppendingPathComponent : @"video" ] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mov",self.mediaModel.mid]];
+    
+//    // create MPMoviePlayerViewController  
+//    MPMoviePlayerViewController *playerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:videoPath]];    
+////    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayBackDidFinish:)    
+////                                                 name:MPMoviePlayerPlaybackDidFinishNotification    
+////                                               object:[playerViewController moviePlayer]];    
+//    // add to view  
+//    playerViewController.view.clipsToBounds = YES;
+//    playerViewController.view.frame = CGRectMake(40, 0, 200, 200);//self.photoImageView.frame;
+//    [self addSubview:playerViewController.view];   
+//    
+//    // play movie   
+//    MPMoviePlayerController *player = [playerViewController moviePlayer];    
+//    player.controlStyle = MPMovieControlStyleNone;    
+////    player.shouldAutoplay = YES;    
+////    player.repeatMode = MPMovieRepeatModeOne;  
+////    [player setFullscreen:YES animated:YES];    
+//    player.scalingMode = MPMovieScalingModeAspectFill;  
+//    [player play];  
+    
+    
     self.player = [[MPMoviePlayerController alloc] initWithContentURL: [NSURL fileURLWithPath:videoPath]];
     [[self.player view] setFrame: [self.photoImageView bounds]];  // frame must match parent view
+//    CGRect frame = player.view.frame;
+//    frame.origin.x = 40;
     self.player.view.frame = self.photoImageView.frame;
     [self addSubview: [self.player view]];
     self.player.view.clipsToBounds = YES;

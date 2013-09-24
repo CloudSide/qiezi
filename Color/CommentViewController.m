@@ -55,7 +55,7 @@
         [[self view] addSubview:navigationBar];
         [navigationBar release];
         
-        self.mTextView = [[[UITextView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, 200)] autorelease];
+        self.mTextView = [[[UITextView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.bounds.size.height-44)] autorelease];
         self.mTextView.font = [UIFont fontWithName:@"Helvetica" size:18];
         
         if (self.feedUsername && self.feedId > 0) {
@@ -65,7 +65,7 @@
             label.tag = 999;
             label.textColor = [UIColor blackColor];
             label.text = [NSString stringWithFormat:@"@%@:",self.feedUsername];
-            
+            //计算评论内容的size
             CGSize labelFontSize = [label.text sizeWithFont:label.font 
                                                constrainedToSize:CGSizeMake(self.view.frame.size.width - 20, 22) 
                                                    lineBreakMode:label.lineBreakMode];
@@ -77,7 +77,7 @@
             label.layer.cornerRadius = 8.0f;
             
             NSMutableString *strHolder = [NSMutableString stringWithString:@""];
-            
+            //计算空格的size
             CGSize charFontSize = [@" " sizeWithFont:label.font 
                                           constrainedToSize:CGSizeMake(self.view.frame.size.width, 22) 
                                               lineBreakMode:label.lineBreakMode];
@@ -93,12 +93,46 @@
             [label release];
         }
         
+
         [self.view addSubview:self.mTextView];
         
-        [self.mTextView becomeFirstResponder];
+        [self.mTextView becomeFirstResponder];//显示键盘
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShow:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        
+        
+#ifdef __IPHONE_7_0
+        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+            
+            navigationBar.frame = CGRectMake(0, 10, 320, 44.0);
+            
+            self.mTextView.frame = CGRectMake(0, 54, self.view.frame.size.width, self.view.bounds.size.height-54);
+        }
+#endif
+        
     }
     
     return self;
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+//    static CGFloat normalKeyboardHeight = 216.0f;
+    
+    NSDictionary *info = [notification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    
+//    CGFloat distanceToMove = kbSize.height - normalKeyboardHeight;
+    
+    //自适应代码
+    
+    CGRect frame = self.mTextView.frame;
+    frame.size.height = self.view.bounds.size.height - 44 - 10 - kbSize.height;
+    self.mTextView.frame = frame;
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,6 +174,9 @@
 }
 
 -(void)dealloc {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     self.mTextView = nil;
     self.delegate = nil;
     self.feedId = nil;

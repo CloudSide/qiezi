@@ -38,6 +38,27 @@
     
     [super dealloc];
 }
+
+//{
+//    "returncode": "0",
+//    "content": {
+//        "circle": [
+//                   {
+//                       "circleId": "179",
+//                       "user": [
+//                                {
+//                                    "userId": "580000009",
+//                                    "name": "标哥",
+//                                    "avatar": "http://12qiezi-12qiezi.stor.sinaapp.com/avatar/580000009/580000009_1338540631.jpg"
+//                                }
+//                                ],
+//                       "ctime": "1339460760"
+//                   }
+//                   ]
+//    }
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
         NSMutableArray *circleArray = [[NSMutableArray alloc] init];//返回结果

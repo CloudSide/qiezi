@@ -1,6 +1,7 @@
 //
 //  NewCommentsHeartbeatInterface.h
 //  Color
+//  新评论心跳接口
 //  Created by chao han on 12-6-11.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

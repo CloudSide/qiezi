@@ -97,7 +97,8 @@
 }  
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField  
-{                                                  
+{                          
+    //键盘输入的界面调整                          
     CGRect frame = self.view.frame;          
     frame.origin.y -= 100;
     [UIView beginAnimations:@"Curl"context:nil];//动画开始            

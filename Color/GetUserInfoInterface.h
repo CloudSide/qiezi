@@ -1,6 +1,7 @@
 //
 //  GetUserInfoInterface.h
 //  Color
+//  根据UserId获取用户信息
 //  Created by chao han on 12-6-9.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

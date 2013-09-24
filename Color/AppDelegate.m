@@ -35,9 +35,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    [MobClick startWithAppkey:kUMENGAPPKEY];
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
@@ -51,17 +48,17 @@
         [servicesDisabledAlert show];
         [servicesDisabledAlert release];
         
-        
+        //此处添加无GPS提示页面
     }
     [manager release];  
     
-    
+    //有网络，登陆操作
     if ([self GetCurrntNet]) {
         self.mDefaultLoginInterface = [[[DefaultLoginInterface alloc] init] autorelease];
         self.mDefaultLoginInterface.delegate = self;
         [self.mDefaultLoginInterface doLogin];
         
-        
+        //显示
         [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
         [self.window makeKeyAndVisible];
     }else{
@@ -79,18 +76,29 @@
         [self.mSendLogInterface sendLog];
     }
     
+//#ifdef __IPHONE_7_0
+//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+//        [application setStatusBarStyle:UIStatusBarStyleLightContent];
+//        self.window.clipsToBounds =YES;
+//        self.window.frame =  CGRectMake(0,20,self.window.frame.size.width,self.window.frame.size.height-20);
+//        
+//        self.window.bounds = CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height);
+//    }
+//#endif
+    
+    
     
     return YES;
 }
 
-
+//检测网络连接的函数
 -(BOOL)GetCurrntNet
 {
     NSString* result;
     Reachability *r = [Reachability reachabilityWithHostName:@"www.baidu.com"];    
     switch ([r currentReachabilityStatus]) {
             
-        case NotReachable:
+        case NotReachable:// 没有网络连接
         {
             result=@"请检查您的网络";
 #ifndef __IPHONE_5_0  
@@ -117,13 +125,13 @@
             return NO;
             break;
         }
-        case ReachableViaWWAN:
+        case ReachableViaWWAN:// 使用3G网络
             
             
             return  YES;
             break;
             
-        case ReachableViaWiFi:
+        case ReachableViaWiFi:// 使用WiFi网络
             
             
             return  YES;
@@ -132,6 +140,7 @@
 }
 
 #pragma mark - UIAlertViewDelegate method
+//alertView 代理方法
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 11112 && buttonIndex == 1) {
@@ -305,6 +314,8 @@
     //    TakePhotoUIViewController *mTakePhotoUIViewController = [[TakePhotoUIViewController alloc]init];
     DiaryUIViewController *mDiaryUIViewController = [[DiaryUIViewController alloc]init];
     NotificationUIViewController *mNotificationUIViewController = [[NotificationUIViewController alloc]init];
+    
+    //隐藏tabbar所留下的黑边（试着注释后你会知道这个的作用）
     mNearByUIViewController.hidesBottomBarWhenPushed = true;
     mDynamicUIViewController.hidesBottomBarWhenPushed = true;
     //    mTakePhotoUIViewController.hidesBottomBarWhenPushed = true;
@@ -316,15 +327,16 @@
     mDiaryUIViewController.title = @"回忆";
     mNotificationUIViewController.title = @"收件箱";
     
+    //创建导航
     UINavigationController *nav = [[UINavigationController alloc] 
                                    initWithRootViewController:mNearByUIViewController ];
     [mNearByUIViewController release];
     UINavigationController *nav1 = [[ UINavigationController alloc] 
                                     initWithRootViewController:mDynamicUIViewController];
     [mDynamicUIViewController release];
-    
-    
-    
+    //    UINavigationController *nav2 = [[UINavigationController alloc] 
+    //                                    initWithRootViewController:mTakePhotoUIViewController];
+    //    [mTakePhotoUIViewController release];
     UINavigationController *nav3 = [[UINavigationController alloc]
                                     initWithRootViewController:mDiaryUIViewController];  
     [mDiaryUIViewController release];
@@ -334,48 +346,63 @@
     
     nav.navigationBar.hidden = YES;
     nav1.navigationBar.hidden = YES;
-    
+    //    nav2.navigationBar.hidden = YES;
     nav3.navigationBar.hidden = YES;
     nav4.navigationBar.hidden = YES;
     
+//    nav.navigationBar.translucent = NO;
+//    nav1.navigationBar.translucent = NO;
+//    nav3.navigationBar.translucent = NO;
+//    nav4.navigationBar.translucent = NO;
+    
     nav.view.frame = CGRectMake(0, 0, self.window.frame.size.width, 406);
     nav1.view.frame = CGRectMake(0, 0, self.window.frame.size.width, 406);
-    
+    //    nav2.view.frame = CGRectMake(0, 0, self.window.frame.size.width, 406);
     nav3.view.frame = CGRectMake(0, 0, self.window.frame.size.width, 406);
     nav4.view.frame = CGRectMake(0, 0, self.window.frame.size.width, 406);
     
     
-    
+    //创建数组
     NSMutableArray *controllers = [[NSMutableArray alloc]init];
     [controllers addObject:nav];
     [nav release];
     [controllers addObject:nav1];
     [nav1 release];
-    
-    
+    //    [controllers addObject:nav2];
+    //    [nav2 release];
     [controllers addObject:nav3];
     [nav3 release];
     [controllers addObject:nav4];
     [nav4 release];
     
+    //创建tabbar
     self.tabBarController = [[CustomTabBarController alloc] init];
+    
     self.tabBarController.viewControllers = controllers;
     [controllers release];
     self.tabBarController.selectedIndex = 0;
+    
+    //显示
     [self.loginNav.view removeFromSuperview];
     self.loginNav = nil;
+
     
     [self.window addSubview:self.tabBarController.view];
+//    [self.window setRootViewController:self.tabBarController];
+    
     [self.window makeKeyAndVisible];
 }
 
+//显示注册页面
 -(void)showRegisteView{
+    //登陆页面
     LoginViewController *loginVC = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
     self.loginNav = [[[UINavigationController alloc] initWithRootViewController:loginVC] autorelease];
     self.loginNav.navigationBar.hidden = YES;
     [loginVC release];
     
-    [self.window addSubview:self.loginNav.view];
+    //显示
+    [self.window addSubview:self.loginNav.view];//tabBarController.view];
     [self.window makeKeyAndVisible];
 
 }
@@ -394,16 +421,18 @@
         [alertView release];
     }
     
-    if (isNew == 1) {
+    if (isNew == 1) {//新用户
         [self showRegisteView];
-    }else{
+    }else{//老用户
         [self showMainView];
     }
     
     self.mDefaultLoginInterface = nil;
 }
 
--(void)loginDidFailed{    
+-(void)loginDidFailed{
+    NSLog(@"登陆失败!!!!!!!!");
+    
     if ([[MySingleton sharedSingleton] isStateDictExist]) {
         [self showMainView];
     }else{

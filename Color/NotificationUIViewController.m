@@ -63,9 +63,16 @@
     _hasMorePage = YES;
     _needAutoRefreshFlag = NO;
     
-    UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 406) style:UITableViewStylePlain];
+    UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.bounds.size.height-54) style:UITableViewStylePlain];
     _table.delegate = self;
     _table.dataSource = self;
+    
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        _table.frame = CGRectMake(0, 20, 320, self.view.bounds.size.height-54-20);
+        [_table setContentInset:UIEdgeInsetsMake(-20, 0, 0, 0)];
+    }
+#endif
     
     self.mtableView = _table;
     [_table release];
@@ -252,7 +259,7 @@
 
 }
 
-
+//用于下拉刷新的delegate
 -(void)getAllCommentListByTimeDidFinished:(NSArray *)mediaArray;
 {
     if (mediaArray.count > 0) {
@@ -269,7 +276,7 @@
 }
 
 -(void)getAllCommentListByTimeDidFailed:(NSString *)errorMsg{
-    
+    //TODO 获取回忆列表失败
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"获取评论列表失败" 
 													   message:errorMsg 
 													  delegate:nil
@@ -286,7 +293,7 @@
 
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
-
+//下拉刷新
 - (void)reloadTableViewDataSource{
 	
 	//  should be calling your tableviews data source model to reload
@@ -297,14 +304,14 @@
     self.mAllCommentListInterfaceForPull.delegate = self;
     NSTimeInterval time = 0;
     if ([self.commentList count]>0) {
-        CommentModel *cm = [self.commentList objectAtIndex:0];
+        CommentModel *cm = [self.commentList objectAtIndex:0];//评论
         time = cm.ctime.timeIntervalSince1970 + 1;
     }
     
     [self.mAllCommentListInterfaceForPull getAllCommentListByEndTime:time];
 }
 
-
+//刷新完成后通知下拉刷新view
 - (void)doneLoadingTableViewData{
 	
 	//  model should call this when its done loading

@@ -37,6 +37,14 @@
     
 }
 
+//{
+//    "returncode": 0,
+//    "content": {
+//        "userId": "580000034",
+//        "sessionId": "43460635a18211fabdf85e6057e6e95c"
+//    }
+//}
+
 #pragma mark - ASIHttpRequestDelegate
 -(void)requestFinished:(ASIHTTPRequest *)request {    
     NSString *responseBody = request.responseString;

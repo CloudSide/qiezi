@@ -36,6 +36,12 @@
     [super dealloc];
 }
 
+//{
+//    "returncode": "0",
+//    
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     
     [self.delegate changeAccountInfoDidFinished];

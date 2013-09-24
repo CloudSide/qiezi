@@ -38,6 +38,14 @@
     [super dealloc];
 }
 
+//{
+//    "returncode": "0",
+//    "content": {
+//        "avatar": "http://12qiezi-12qiezi.stor.sinaapp.com/avatar/580000016/580000016_1340184196.gif"
+//    }
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
         NSDictionary *content = [responseDict objectForKey:@"content"];

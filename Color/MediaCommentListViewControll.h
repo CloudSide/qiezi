@@ -35,13 +35,13 @@
 @property (nonatomic,retain) TabBarCommentView *tabBarView;
 
 @property (nonatomic,retain) MediaModel *media;
-@property (nonatomic,retain) NSMutableArray *commentList;
+@property (nonatomic,retain) NSMutableArray *commentList;//评论列表
 
 @property (nonatomic,retain) CreateCommentInterface *mCreateCommentInterface;
 @property (nonatomic,retain) CommentViewController *mCommentViewController;
 
-@property (nonatomic,retain) CommentShowInterface *mCommentShowInterface;
-@property (nonatomic,retain) CommentShowInterface *mCommentShowInterfaceForPull;
+@property (nonatomic,retain) CommentShowInterface *mCommentShowInterface;//获取评论列表接口
+@property (nonatomic,retain) CommentShowInterface *mCommentShowInterfaceForPull;//获取评论列表接口--下拉刷新
 
 @property (nonatomic,retain) IBOutlet UIScrollView *mscrollView;
 @property (nonatomic,retain) IBOutlet UILabel *nameLabel;

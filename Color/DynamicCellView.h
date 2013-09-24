@@ -1,6 +1,7 @@
 //
 //  DynamicCellView.h
 //  Color
+//  动态主界面--cell view
 //  Created by chao han on 12-5-13.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
@@ -16,6 +17,6 @@
 @property (nonatomic,retain) IBOutlet UILabel *dateTime;
 @property (nonatomic,retain) IBOutlet UIImageView *iconView;
 
-@property (nonatomic,retain) NSDictionary *dynamicDict;
+@property (nonatomic,retain) NSDictionary *dynamicDict;//当前动态信息数据集合
 
 @end

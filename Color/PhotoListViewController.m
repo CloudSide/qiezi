@@ -174,10 +174,23 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIScrollView *_scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 406)];
+    UIScrollView *_scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.bounds.size.height-54)];
     _scrollView.delegate = self;
     _scrollView.scrollsToTop = YES;
     _scrollView.alwaysBounceVertical = YES;
+    
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 20)];
+        view.backgroundColor = [UIColor blackColor];
+        [self.view addSubview:view];
+        [view release];
+        
+        _scrollView.frame = CGRectMake(0, 20, 320, self.view.bounds.size.height-54-20);
+
+    }
+#endif
     
     self.mscrollView = _scrollView;
     [_scrollView release];
@@ -226,7 +239,7 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
+//显示自己的评论内容 [NSDictionary dictionaryWithObjectsAndKeys:content,@"content",mediaId,@"mediaId",nil]];
 -(void)showMyComment:(NSNotification *)notification{
     NSString *content = [notification.userInfo objectForKey:@"content"];
     NSString *mediaId = [notification.userInfo objectForKey:@"mediaId"];
@@ -261,7 +274,7 @@
 -(void)backAction{
     [self.navigationController popViewControllerAnimated:YES];
     
-    [mCustomTabBarController popTabBar];
+    [mCustomTabBarController popTabBar];//移除当前tabbar
 
 }
 
@@ -269,8 +282,8 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
     
 //    CustomTabBarController *mCustomTabBarController = (CustomTabBarController *)self.tabBarController;
-    
-    [mCustomTabBarController popToRootTabBar];
+    //移除当前tabbar
+    [mCustomTabBarController popToRootTabBar];//移除当前tabbar
     
 }
 
@@ -284,7 +297,7 @@
 	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
     
     if (_hasMorePage && !_isGettingNextPage && scrollView.contentOffset.y > scrollView.contentSize.height - self.view.frame.size.height / 2) {
-        
+        //网络连接
         self.mMediaByCircleIdInterface = [[[MediaByCircleIdInterface alloc] init] autorelease];
         self.mMediaByCircleIdInterface.delegate = self;
         MediaModel *mm = [self.mediaList lastObject];
@@ -326,7 +339,7 @@
     _isGettingNextPage = NO;
 }
 
-
+//用于下拉刷新的delegate
 -(void)getMediaByTimeDidFinished:(NSArray *)mediaArray{
     if (mediaArray.count > 0) {
         [self.mediaList insertObjects:mediaArray
@@ -358,7 +371,7 @@
 
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
-
+//下拉刷新---清空并重新加载所有数据
 - (void)reloadTableViewDataSource{
 	
 	//  should be calling your tableviews data source model to reload
@@ -378,7 +391,7 @@
     }
 }
 
-
+//刷新完成后通知下拉刷新view
 - (void)doneLoadingTableViewData{
 	
 	//  model should call this when its done loading
@@ -425,14 +438,14 @@
 #pragma mark - ActionSheet Delegate Methods
 - (void) actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0)
+    if (buttonIndex == 0)//删除
     {
         MediaModel *mediaModel = [self.mediaList objectAtIndex:actionSheet.tag];
         self.mRemoveMediaInterface = [[RemoveMediaInterface alloc] init];
         self.mRemoveMediaInterface.delegate = self;
         [self.mRemoveMediaInterface removeMediaById:mediaModel.mid];
     
-        
+        //发送notification
         [[NSNotificationCenter defaultCenter] postNotificationName:@"removeMedia" 
                                                             object:nil 
                                                           userInfo:[NSDictionary dictionaryWithObjectsAndKeys:mediaModel.mid,@"mediaId",nil]];

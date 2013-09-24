@@ -11,7 +11,7 @@
 
 @implementation UIImage (UIImageScale)
 
-
+//截取部分图像 
 -(UIImage*)getSubImage:(CGRect)rect 
 { 
     CGImageRef subImageRef = CGImageCreateWithImageInRect(self.CGImage, rect); 
@@ -29,7 +29,7 @@
     return smallImage; 
 } 
 
-
+//等比例缩放 
 -(UIImage*)scaleToSize:(CGSize)size  
 { 
     CGFloat width = CGImageGetWidth(self.CGImage); 
@@ -54,26 +54,26 @@
     int xPos = (size.width - width)/2; 
     int yPos = (size.height-height)/2; 
     
-    
-    
+    // 创建一个bitmap的context   
+    // 并把它设置成为当前正在使用的context   
     UIGraphicsBeginImageContext(size);   
     
-    
+    // 绘制改变大小的图片   
     [self drawInRect:CGRectMake(xPos, yPos, width, height)];   
     
-    
+    // 从当前context中创建一个改变大小后的图片   
     UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();   
     
-    
+    // 使当前的context出堆栈   
     UIGraphicsEndImageContext();   
     
-    
+    // 返回新的改变大小后的图片   
     return scaledImage; 
 }  
 
 -(NSString *) image2String{
-    NSData* pictureData = UIImageJPEGRepresentation(self,0.5f);
-    NSString* pictureDataString = [pictureData base64Encoding];
+    NSData* pictureData = UIImageJPEGRepresentation(self,0.5f);//进行图片压缩从0.0到1.0（0.0表示最大压缩，质量最低);
+    NSString* pictureDataString = [pictureData base64Encoding];//图片转码成为base64Encoding，
     return pictureDataString;
 }
 

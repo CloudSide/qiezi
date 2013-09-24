@@ -17,6 +17,6 @@
 -(BOOL)updatePendingStateById:(NSInteger)pid state:(NSInteger)state;//根据id修改状态
 -(BOOL)removePendingUploadTaskDTOById:(NSInteger) pid;
 
--(BOOL)repairAllTask;
+-(BOOL)repairAllTask;//修复所有上传任务记录(若上传中客户端被关闭则需要重新上传)
 
 @end

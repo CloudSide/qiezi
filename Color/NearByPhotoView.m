@@ -41,6 +41,7 @@
 }
 */
 
+//移除无照片提示页面
 -(void)removeNoMediaView
 {
     if (self.noMediaViewGroup) {
@@ -91,6 +92,8 @@
                                       , 0
                                       , self.peopleScrollView.frame.size.height
                                       , self.peopleScrollView.frame.size.height);
+        
+        //朋友头像点击事件
         UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goHomePageForNearByUser:)];
         [headerTap setNumberOfTapsRequired:1];
         [peopleIcon addGestureRecognizer:headerTap];
@@ -99,6 +102,7 @@
         [self.peopleScrollView addSubview:peopleIcon];
         [peopleIcon release];
     }
+    
     self.peopleScrollView.contentSize = CGSizeMake(self.peopleScrollView.frame.size.width
                                                    , self.peopleScrollView.frame.size.height);
 }
@@ -121,6 +125,8 @@
         {
             [self removeNoMediaView];
         } 
+        
+        //设置圈子成员
         NSInteger i = 0;
         for (UserModel *user in self.mCircleModel.usersArray) {
             EGOImageView *imageView = [[EGOImageView alloc] init];
@@ -129,6 +135,7 @@
             imageView.userInteractionEnabled = YES;
             imageView.tag = i;
             //TODO 点击事件，自定义tag
+            //朋友头像点击事件
             UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goHomePage:)];
             [headerTap setNumberOfTapsRequired:1];
             [imageView addGestureRecognizer:headerTap];
@@ -140,6 +147,8 @@
             ++i;
         }
         self.memberScrollView.contentSize = CGSizeMake(i * 40, self.memberScrollView.frame.size.height);
+        
+        //设置图片scrollview
         i = 0;
         for (MediaModel *media in self.mCircleModel.mediasArray) {
             EGOImageView *imageView = [[EGOImageView alloc] init];
@@ -159,17 +168,22 @@
             imageView.userInteractionEnabled = YES;
             imageView.tag = i;
             //TODO 点击事件，自定义tag
+            
+
             [self.photoScrollView addSubview:imageView];
             [imageView release];
             
             ++i;
         }
         self.photoScrollView.contentSize = CGSizeMake(self.photoScrollView.frame.size.width,i * 80 + 160);
+        
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(addMyMedia:) 
                                                      name:[NSString stringWithFormat:@"circleid_%@",self.mCircleModel.cId] 
                                                    object:nil];
+        
+        //点击事件
         self.photoImageView.userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(photoTaped:)];
         [self.photoImageView addGestureRecognizer:singleTap];
@@ -177,10 +191,13 @@
         
         [self showCurrentPic];
     }
+    
 }
+
+//添加自己拍摄的照片
 -(void)addMyMedia:(NSNotification *)notification{
     NSString *mediaPath = [notification.userInfo objectForKey:@"imageFilePath"];
-    NSString *mediaType = [notification.userInfo objectForKey:@"mediaType"];//1:video
+    NSString *mediaType = [notification.userInfo objectForKey:@"mediaType"];//0:photo 1:video
     if (mediaPath) {
         MediaModel *myMediaModel = [[MediaModel alloc] init];
         myMediaModel.mid = 0;
@@ -227,6 +244,8 @@
                 
 //                break;
             }
+            
+            //加载其他图片
             EGOImageView *photo = (EGOImageView *)view;
 //            CGRect frame = photo.frame;
 //            viewFrame.origin.y -= self.photoScrollView.contentOffset.y;
@@ -236,6 +255,7 @@
             if (CGRectIntersectsRect(scrollViewFrame, viewFrame) && photo.imageURL == nil) {//相交，显示图片
                 MediaModel *media = [self.mCircleModel.mediasArray objectAtIndex:i];
                 photo.imageURL = [NSURL URLWithString:media.originalUrl];
+                //            }else{//销毁图片
                 //                [photo cancelImageLoad];
                 //                photo.image = nil;
                 //                photo.imageURL = nil;
@@ -253,6 +273,8 @@
             [view removeFromSuperview];
         }
     }
+    
+    //设置圈子成员
     NSInteger i = 0;
     for (UserModel *user in self.mCircleModel.usersArray) {
         EGOImageView *imageView = [[EGOImageView alloc] init];
@@ -261,6 +283,7 @@
         imageView.userInteractionEnabled = YES;
         imageView.tag = i;
         //TODO 点击事件，自定义tag
+        //朋友头像点击事件
         UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goHomePage:)];
         [headerTap setNumberOfTapsRequired:1];
         [imageView addGestureRecognizer:headerTap];
@@ -273,7 +296,7 @@
     self.memberScrollView.contentSize = CGSizeMake(i * 40, self.memberScrollView.frame.size.height);
 }
 
--(void)updateMedias
+-(void)updateMedias//更新照片
 {   
     [self removeNoMediaView];
     
@@ -285,6 +308,14 @@
         }
     }
     
+//    NSInteger lastAmount = 0;
+//    for (UIView *view in [self.photoScrollView subviews]) {
+//        if ([view isMemberOfClass:[EGOImageView class]]) {
+//            ++lastAmount;
+//        }
+//    }
+    
+    //设置图片scrollview
     NSInteger i = 0;//self.mCircleModel.mediasArray.count - lastAmount - 1;
 //    for (;i >= 0 ; --i) {
     for (; i < self.mCircleModel.mediasArray.count; ++i) {
@@ -328,9 +359,14 @@
     
     [super dealloc];
 }
+
+#pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [self showCurrentPic];
 }
+
+#pragma mark - photoTaped
+//照片点击事件
 -(void)photoTaped:(UIGestureRecognizer *)gesture{
     if (self.photoImageView.image) {
         PhotoListViewController *_photoListViewController = [[PhotoListViewController alloc] init];

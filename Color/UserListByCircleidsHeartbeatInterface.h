@@ -1,6 +1,7 @@
 //
 //  UserListByCircleidsHeartbeatInterface.h
 //  Color
+//  根据circleId获取对应圈子成员 心跳接口
 //  Created by chao han on 12-6-11.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

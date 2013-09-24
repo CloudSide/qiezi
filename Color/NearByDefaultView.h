@@ -11,7 +11,7 @@
 @class CircleModel;
 @interface NearByDefaultView : UIView
 
-@property (nonatomic,retain) IBOutlet UIScrollView *peopleScrollView;//scrollView
+@property (nonatomic,retain) IBOutlet UIScrollView *peopleScrollView;//最上面头像scrollView
 @property (nonatomic,retain) CircleModel *mCircleModel;
 
 @end

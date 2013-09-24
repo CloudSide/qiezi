@@ -39,14 +39,58 @@
     
     [super dealloc];
 }
+
+//{
+//    "returncode": "0",
+//    "content": {
+//        "media": [
+//                  {
+//                      "userId": "580000015",
+//                      "mediaId": "580000013_1339388060",
+//                      "ctime": "1339388060",
+//                      "type": 0,
+//                      "circleId": "174",
+//                      "originalUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/original/580000013/580000013_1339388060.jpg",
+//                      "thumbnailUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/thumbnail/580000013/small_580000013_1339388060.jpg",
+//                      "comCount": "0",
+//                      "googCount": "0"
+//                  },
+//                  {
+//                      "userId": "580000015",
+//                      "mediaId": "580000014_1339262482",
+//                      "ctime": "1339262482",
+//                      "type": 1,
+//                      "circleId": "163",
+//                      "originalUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/original/580000014/580000014_1339262482.3gp",
+//                      "thumbnailUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/thumbnail/580000014/small_580000014_1339262482.jpg",
+//                      "comCount": "0",
+//                      "googCount": "0"
+//                  },
+//                  {
+//                      "userId": "580000015",
+//                      "mediaId": "580000014_1339262433",
+//                      "ctime": "1339262433",
+//                      "type": 0,
+//                      "circleId": "162",
+//                      "originalUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/original/580000014/580000014_1339262433.gif",
+//                      "thumbnailUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/thumbnail/580000014/small_580000014_1339262433.gif",
+//                      "comCount": "0",
+//                      "googCount": "0"
+//                  }
+//                  ]
+//    }
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
-        NSMutableDictionary *mediaDictionary = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *mediaDictionary = [[NSMutableDictionary alloc] init];//返回结果
         
         NSDictionary *content = [responseDict objectForKey:@"content"];
         NSArray *mediaArray = [content objectForKey:@"media"];
         
         for (NSDictionary *dict in mediaArray) {
+            //丢弃自己拍摄的照片，自己拍摄的照片已经通过notification添加上去了
             if (![[MySingleton sharedSingleton].userId isEqualToString:[dict objectForKey:@"userId"]]) {
                 MediaModel *mediaModel = [[MediaModel alloc] init];
                 mediaModel.mid = [dict objectForKey:@"mediaId"];

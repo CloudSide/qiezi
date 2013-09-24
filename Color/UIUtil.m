@@ -34,11 +34,11 @@
     return image;
 }
 
-
-
+// 用于裁剪摄像头拍照后的图片
+// Code from: http://discussions.apple.com/thread.jspa?messageID=7949889
 + (UIImage *)scaleAndRotateImage:(UIImage *)image {
-
-    int kDestResolution = 640; 
+//    int kMaxResolution = 640; // Or whatever
+    int kDestResolution = 640; // Or whatever
     
     CGImageRef imgRef = image.CGImage;
     
@@ -48,17 +48,32 @@
     
     CGAffineTransform transform = CGAffineTransformIdentity;
     CGRect bounds = CGRectMake(0, 0, width, height);
+    //    if (width > kMaxResolution || height > kMaxResolution) {
+    //        CGFloat ratio = width/height;
+    //        if (ratio > 1) {
+    //            bounds.size.width = kMaxResolution;
+    //            bounds.size.height = roundf(bounds.size.width / ratio);
+    //        }
+    //        else {
+    //            bounds.size.height = kMaxResolution;
+    //            bounds.size.width = roundf(bounds.size.height * ratio);
+    //        }
+    //    }
     
+//    CGFloat smallerWidth = width > height ? height : width;
+    
+    //修改为最小边永远都是kDestResolution
+//    if (smallerWidth > kDestResolution) {
         CGFloat ratio = width/height;
-        if (ratio > 1) {
+        if (ratio > 1) {//宽大于高
             bounds.size.height = kDestResolution;
             bounds.size.width = roundf(bounds.size.height * ratio);
         }
-        else {
+        else {//宽小于高
             bounds.size.width = kDestResolution;
             bounds.size.height = roundf(bounds.size.width / ratio);
         }
-
+//    }
     
     CGFloat scaleRatio = bounds.size.width / width;
     CGSize imageSize = CGSizeMake(CGImageGetWidth(imgRef), CGImageGetHeight(imgRef));
@@ -66,26 +81,26 @@
     UIImageOrientation orient = image.imageOrientation;
     switch(orient) {
             
-        case UIImageOrientationUp: 
+        case UIImageOrientationUp: //EXIF = 1
             transform = CGAffineTransformIdentity;
             break;
             
-        case UIImageOrientationUpMirrored: 
+        case UIImageOrientationUpMirrored: //EXIF = 2
             transform = CGAffineTransformMakeTranslation(imageSize.width, 0.0);
             transform = CGAffineTransformScale(transform, -1.0, 1.0);
             break;
             
-        case UIImageOrientationDown: 
+        case UIImageOrientationDown: //EXIF = 3
             transform = CGAffineTransformMakeTranslation(imageSize.width, imageSize.height);
             transform = CGAffineTransformRotate(transform, M_PI);
             break;
             
-        case UIImageOrientationDownMirrored: 
+        case UIImageOrientationDownMirrored: //EXIF = 4
             transform = CGAffineTransformMakeTranslation(0.0, imageSize.height);
             transform = CGAffineTransformScale(transform, 1.0, -1.0);
             break;
             
-        case UIImageOrientationLeftMirrored: 
+        case UIImageOrientationLeftMirrored: //EXIF = 5
             boundHeight = bounds.size.height;
             bounds.size.height = bounds.size.width;
             bounds.size.width = boundHeight;
@@ -94,7 +109,7 @@
             transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
             break;
             
-        case UIImageOrientationLeft: 
+        case UIImageOrientationLeft: //EXIF = 6
             boundHeight = bounds.size.height;
             bounds.size.height = bounds.size.width;
             bounds.size.width = boundHeight;
@@ -102,7 +117,7 @@
             transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
             break;
             
-        case UIImageOrientationRightMirrored: 
+        case UIImageOrientationRightMirrored: //EXIF = 7
             boundHeight = bounds.size.height;
             bounds.size.height = bounds.size.width;
             bounds.size.width = boundHeight;
@@ -110,7 +125,7 @@
             transform = CGAffineTransformRotate(transform, M_PI / 2.0);
             break;
             
-        case UIImageOrientationRight: 
+        case UIImageOrientationRight: //EXIF = 8
             boundHeight = bounds.size.height;
             bounds.size.height = bounds.size.width;
             bounds.size.width = boundHeight;

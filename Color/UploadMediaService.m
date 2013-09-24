@@ -1,6 +1,7 @@
 //
 //  UploadMediaService.m
 //  Color
+//  后台照片、视频文件上传服务
 //  Created by chao han on 12-5-31.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
@@ -16,7 +17,7 @@
     self = [super init];
     if (self) {
         self.operationQueue = [[[NSOperationQueue alloc] init] autorelease];
-        [self.operationQueue setMaxConcurrentOperationCount:2];
+        [self.operationQueue setMaxConcurrentOperationCount:2];//设置同时进行的线程数量，建议为2。
         
         self.interfaceHolder = [NSMutableDictionary dictionary];
     }
@@ -30,14 +31,31 @@
 
 - (void)addOperation:(long long int)taskId
 {
+//    //保存上传列表到nsuserdefaults
+//    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+//    if ([userDefault valueForKey:@"upload"] == nil) {
+//        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray arrayWithObject:_dic],@"upload",nil];
+//        [userDefault registerDefaults:dic];
+//        [userDefault synchronize];
+//    }
+//    else {
+//        NSArray *array = [userDefault valueForKey:@"upload"];
+//        NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:array];
+//        [arr addObject:_dic];
+//        [userDefault setObject:arr forKey:@"upload"];
+//        [arr release];
+//        [userDefault synchronize];
+//    }
+    
     PendingUploadDao *dao = [[PendingUploadDao alloc] init];
     PendingUploadTaskDTO *dto = [[dao getPendingUploadTaskDTOById:taskId] retain];
     
     if (dto) {
         PendingUploadDao *dao = [[PendingUploadDao alloc] init];
-        [dao updatePendingStateById:dto.pid state:1];
+        [dao updatePendingStateById:dto.pid state:1];//状态改为1  上传中
         [dao release];
         
+        //添加到队列
         NSInvocationOperation* theOp = [[NSInvocationOperation alloc] initWithTarget:self
                                                                             selector:@selector(doUploadTask:) object:dto];
         
@@ -80,6 +98,7 @@
         PendingUploadTaskDTO *dto = (PendingUploadTaskDTO *)[_obj retain];
         
         if (dto.mediaType == 0) {
+            //上传照片
             UploadImageInterface *mUploadImageInterface = [[UploadImageInterface alloc] init];
             [self.interfaceHolder setObject:mUploadImageInterface forKey:[NSNumber numberWithInt:dto.pid]];
             mUploadImageInterface.delegate = self;
@@ -91,6 +110,7 @@
                                                taskId:dto.pid];
             [mUploadImageInterface release];
         }else{
+            //上传视频
             UploadVideoInterface *mUploadVideoInterface = [[UploadVideoInterface alloc] init];
             [self.interfaceHolder setObject:mUploadVideoInterface forKey:[NSNumber numberWithInt:dto.pid]];
             mUploadVideoInterface.delegate = self;
@@ -106,6 +126,12 @@
         
         [dto release];
     }
+    
+//    //实现上传方法
+//    //成功调用
+//    [self performSelectorOnMainThread:@selector(taskMethodDidFinish:) withObject:nil waitUntilDone:YES];
+//    //失败调用
+//    [self performSelectorOnMainThread:@selector(taskMethodDidFailed:) withObject:nil waitUntilDone:YES];
 }
 
 //- (void)taskMethodDidFailed:(id)_obj
@@ -116,6 +142,17 @@
 //    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:tdic];
 //    [dic setValue:[NSNumber numberWithInt:1] forKey:@"state"];
 //    
+//    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+//    NSArray *array = [userDefault valueForKey:@"upload"];
+//    NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:array];
+//    int _index = (int)[arr indexOfObject:dic];
+//    if (_index != NSNotFound) {
+//        NSMutableDictionary *tmp = [NSMutableDictionary dictionaryWithDictionary:[arr objectAtIndex:_index]];
+//        [tmp setValue:[NSNumber numberWithInt:2] forKey:@"state"];//0 等待上传 1 上传中 2 失败
+//        [arr replaceObjectAtIndex:_index withObject:tmp];
+//    }
+//    [userDefault setObject:arr forKey:@"upload"];
+//    [arr release];
 //    [userDefault synchronize];
 //    
 //    //更新UI
@@ -131,10 +168,26 @@
 //    
 //    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
 //    NSArray *array = [userDefault valueForKey:@"upload"];
+//    NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:array];
+//    int _index = (int)[arr indexOfObject:dic];
+//    if (_index != NSNotFound) {
+//        [arr removeObjectAtIndex:_index];
+//    }
+//    [userDefault setObject:arr forKey:@"upload"];
+//    [arr release];
+//    [userDefault synchronize];
+//    
+//    //更新UI
 //}
 
 - (void)dealloc
 {
+//    self.mUploadImageInterface.delegate = nil;
+//    self.mUploadImageInterface = nil;
+//    
+//    self.mUploadVideoInterface.delegate = nil;
+//    self.mUploadVideoInterface = nil;
+    
     for (id interface in [self.interfaceHolder allValues]) {
         if ([interface isMemberOfClass:[UploadImageInterface class]]) {
             UploadImageInterface *uii = (UploadImageInterface *)interface;
@@ -169,8 +222,9 @@
     [self.interfaceHolder removeObjectForKey:[NSNumber numberWithLongLong:tId]];
     
     PendingUploadDao *dao = [[PendingUploadDao alloc] init];
-    [dao updatePendingStateById:tId state:2];
+    [dao updatePendingStateById:tId state:2];//修改状态为:上传照片失败
     
+//    [self addOperation:tId];
     [self performSelector:@selector(addOperationAfterDelay:) withObject:[NSNumber numberWithLongLong:tId] afterDelay:5];
     [dao release];
 }
@@ -193,7 +247,7 @@
     [self.interfaceHolder removeObjectForKey:[NSNumber numberWithLongLong:tId]];
     
     PendingUploadDao *dao = [[PendingUploadDao alloc] init];
-    [dao updatePendingStateById:tId state:2];
+    [dao updatePendingStateById:tId state:2];//修改状态为:上传照片失败
     
 //    [self addOperation:tId];
     [self performSelector:@selector(addOperationAfterDelay:) withObject:[NSNumber numberWithLongLong:tId] afterDelay:5];

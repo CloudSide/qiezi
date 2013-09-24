@@ -1,6 +1,7 @@
 //
 //  CreateCircleInterface.h
 //  Color
+//  创建圈子
 //  Created by chao han on 12-6-19.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

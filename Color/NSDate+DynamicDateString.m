@@ -49,21 +49,21 @@
     } 
     
     NSString *dateString ;
-    if (distanceFromNow < 60) {
+    if (distanceFromNow < 60) {//小于1分钟
         dateString = @"片刻前";
         
-    }else if (distanceFromNow < 60 * 60) {
+    }else if (distanceFromNow < 60 * 60) {//小于一小时
         dateString = [NSString stringWithFormat:@"%d分钟前",(NSInteger)distanceFromNow / 60];
         
-    }else if (distanceFromNow < 24 * 60 * 60) {
+    }else if (distanceFromNow < 24 * 60 * 60) {//小于一天
         dateString = [NSString stringWithFormat:@"%d小时%d分钟前",(NSInteger)distanceFromNow / 60 /60,(NSInteger)distanceFromNow / 60 % 60];
         
-    }else if (distanceFromNow < 7 * 24 * 60 * 60) {
+    }else if (distanceFromNow < 7 * 24 * 60 * 60) {//小于一周
         dateString = [NSString stringWithFormat:@"%@ %02d:%02d",weekDay,[comps hour],[comps minute]];
         
-    }else if (distanceFromNow < 30 * 24 * 60 * 60) {
+    }else if (distanceFromNow < 30 * 24 * 60 * 60) {//小于一月
         dateString = [NSString stringWithFormat:@"%d天前",(NSInteger)distanceFromNow / 24 / 60 / 60];
-    }else {
+    }else {//大于1月
         dateString = [NSString stringWithFormat:@"%d月%d日",[comps month],[comps day]];
     }
 

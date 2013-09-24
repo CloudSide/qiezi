@@ -19,6 +19,7 @@
     
     self.myQueue = [[ASINetworkQueue alloc] init];
     [self.myQueue cancelAllOperations];
+//    [self.myQueue setDownloadProgressDelegate:myProgressIndicator];
     [self.myQueue setDelegate:self];
     [self.myQueue setQueueDidFinishSelector:@selector(queueComplete:)];
     
@@ -26,12 +27,14 @@
     baseVideoPath=[baseVideoPath stringByAppendingPathComponent : @"video" ];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
+//    NSError *error;
     
     BOOL isDirectory = NO;
     BOOL exists = [fileManager fileExistsAtPath:baseVideoPath isDirectory:&isDirectory];
     if (!exists || !isDirectory) {
         [fileManager removeItemAtPath:baseVideoPath error:nil];
         
+        //创建目录
         [fileManager createDirectoryAtPath:baseVideoPath withIntermediateDirectories:NO attributes:nil error:nil];
     }
     

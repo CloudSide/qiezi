@@ -16,7 +16,7 @@
 @property (nonatomic,retain) ASIFormDataRequest *request;
 @property (nonatomic,assign) id<SendLogInterfaceDelegate> delegate;
 
--(void)sendLog;
+-(void)sendLog;//发送日志
 @end
 
 @protocol SendLogInterfaceDelegate

@@ -1,6 +1,7 @@
 //
 //  ChangeAccountInfoInterface.h
 //  Color
+//  修改用户信息   目前只能修改昵称
 //  Created by chao han on 12-6-20.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

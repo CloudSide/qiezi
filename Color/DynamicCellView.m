@@ -55,9 +55,13 @@
     for (UIView *view in [self.imageGroup subviews]) {
         [view removeFromSuperview];
     }
-    NSDate *lastTime = [self.dynamicDict objectForKey:@"date"]; 
+    
+    //显示最后一张照片的时间
+    NSDate *lastTime = [self.dynamicDict objectForKey:@"date"];//最后一张照片的时间    
     self.dateTime.text = [lastTime getDynamicDateStringFromNow];
-    NSArray *picArray = [self.dynamicDict objectForKey:@"picArray"];
+
+    //显示最后4张照片
+    NSArray *picArray = [self.dynamicDict objectForKey:@"picArray"];//照片数组
     NSInteger mediaCount = [picArray count] > 4 ? 4 : [picArray count];
     
     for (NSInteger i = 0 ; i < mediaCount ; ++i) {
@@ -99,7 +103,8 @@
         [self.imageGroup addSubview:img];
         [img release];
     }
-    NSArray *userNames = [self.dynamicDict objectForKey:@"userNames"];
+    
+    NSArray *userNames = [self.dynamicDict objectForKey:@"userNames"];//圈子成员名称数组
     NSMutableString *peopleNameStr = [NSMutableString stringWithString:@""];
     
     NSInteger userNamesCount = userNames.count;

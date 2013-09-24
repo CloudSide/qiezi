@@ -11,20 +11,22 @@
 @class EGOImageView;
 @class CircleModel;
 @interface NearByPhotoView : UIView <UIScrollViewDelegate>{
-    NSString *_currentMediaId;
+    NSString *_currentMediaId;//当前显示图片的id
 }
-@property (nonatomic,retain) IBOutlet UIScrollView *memberScrollView;
-@property (nonatomic,retain) IBOutlet UIScrollView *photoScrollView;
+
+@property (nonatomic,retain) IBOutlet UIScrollView *memberScrollView;//成员scrollView
+
+@property (nonatomic,retain) IBOutlet UIScrollView *photoScrollView;//图片scrollView
 @property (nonatomic,retain) IBOutlet EGOImageView *photoImageView;
 @property (nonatomic,retain) IBOutlet UILabel *dateLabel;
 
 @property (nonatomic,retain) CircleModel *mCircleModel;
-@property (nonatomic,retain) NSMutableArray *nearByUsersArray;
+@property (nonatomic,retain) NSMutableArray *nearByUsersArray;//附近所有用户
 
 @property (nonatomic,retain) IBOutlet UIView *noMediaViewGroup;
-@property (nonatomic,retain) IBOutlet UIScrollView *peopleScrollView;
+@property (nonatomic,retain) IBOutlet UIScrollView *peopleScrollView;//最上面头像scrollView
 
--(void)updateMembers;
--(void)updateMedias;
+-(void)updateMembers;//更新圈子成员
+-(void)updateMedias;//更新照片
 
 @end

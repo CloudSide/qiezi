@@ -54,6 +54,7 @@
     [_mCircleModel release];
     _mCircleModel = [cm retain];
     
+    //设置圈子成员
     NSInteger i = 0;
     for (UserModel *user in self.mCircleModel.usersArray) {
         EGOImageView *imageView = [[EGOImageView alloc] init];
@@ -62,6 +63,7 @@
         imageView.userInteractionEnabled = YES;
         imageView.tag = i;
         //TODO 点击事件，自定义tag
+        //朋友头像点击事件
         UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goHomePage:)];
         [headerTap setNumberOfTapsRequired:1];
         [imageView addGestureRecognizer:headerTap];
@@ -75,6 +77,9 @@
     self.peopleScrollView.contentSize = CGSizeMake(i * 40, self.peopleScrollView.frame.size.height);
     
 }
+
+
+//初始化头像scroll view
 -(void)initPeopleScrollView{
     for (int i = 0; i<3; i++) {
         UIImageView *peopleIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg",i]]];

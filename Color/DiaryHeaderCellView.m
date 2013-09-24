@@ -1,6 +1,7 @@
 //
 //  DiaryHeaderCellView.m
 //  Color
+//  回忆主界面  tableview 第一行，用户信息cell
 //  Created by chao han on 12-5-14.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

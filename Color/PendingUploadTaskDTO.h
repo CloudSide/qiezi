@@ -20,6 +20,6 @@
 @property (nonatomic,retain) NSString *circleId;
 @property (nonatomic,retain) NSString *description;
 @property (nonatomic,retain) NSString *thumbnailPath;
-@property (nonatomic,assign) NSInteger pendingState;
+@property (nonatomic,assign) NSInteger pendingState;//0,等待上传  1,上传中  2,上传失败
 
 @end

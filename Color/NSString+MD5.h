@@ -10,6 +10,6 @@
 
 @interface NSString (MD5)
 
--(NSString *) md5HexDigest;
+-(NSString *) md5HexDigest;//返回16位长的MD5值
 
 @end

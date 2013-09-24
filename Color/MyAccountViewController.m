@@ -46,7 +46,7 @@
     [self.mChangeAccountInfoInterface changeAccountInfo:self.nameTextField.text tel:self.telTextField.text];
 }
 
-
+//拍摄头像
 -(void) takePhotoAction:(id) sender
 {
     [self takePhoto];
@@ -126,7 +126,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    // Do any additional setup after loading the view from its nib.
     
     self.navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
     [self.navigationBar setBarStyle:UIBarStyleBlack];
@@ -147,13 +147,23 @@
     self.mscrollView.contentSize = self.mscrollView.frame.size;
     self.mscrollView.alwaysBounceVertical = YES;
     
-    
+    //头像点击事件
     UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(takePhotoAction:)];
     [headerTap setNumberOfTapsRequired:1];
     self.avatarImageView.userInteractionEnabled = YES;
     [self.avatarImageView addGestureRecognizer:headerTap];
     [headerTap release];
 
+    
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        
+        self.navigationBar.frame = CGRectMake(0.0, 10.0, 320.0, 44.0);
+        
+        self.mscrollView.frame = CGRectMake(0, 54, 320, self.view.bounds.size.height-54-54);
+        
+    }
+#endif
 }
 
 - (void)viewDidUnload

@@ -38,6 +38,11 @@
     [super dealloc];
 }
 
+//{
+//    "returncode": 0,
+//    "commentAmount": 2
+//}
+
 #pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {

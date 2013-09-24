@@ -284,7 +284,7 @@
 		03F53B2E15679A5300BD695F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F53B2C15679A5300BD695F /* LoginViewController.xib */; };
 		03F53B3315679F1000BD695F /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F53B3115679F1000BD695F /* RegisteViewController.m */; };
 		03F53B3415679F1000BD695F /* RegisteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F53B3215679F1000BD695F /* RegisteViewController.xib */; };
-		3F49D71F1689B2620090B2BA /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F49D71E1689B2620090B2BA /* libMobClickLibrary.a */; };
+		C1A35F8A17F0311F00C1219E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1A35F8917F0311F00C1219E /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -696,8 +696,8 @@
 		03F53B3015679F1000BD695F /* RegisteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteViewController.h; sourceTree = "<group>"; };
 		03F53B3115679F1000BD695F /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
 		03F53B3215679F1000BD695F /* RegisteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisteViewController.xib; sourceTree = "<group>"; };
-		3F49D71E1689B2620090B2BA /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = ColorTests/libMobClickLibrary.a; sourceTree = SOURCE_ROOT; };
-		3F49D7211689B26C0090B2BA /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClick.h; path = ColorTests/MobClick.h; sourceTree = SOURCE_ROOT; };
+		4E4BF83F15D4AD7200FB1247 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
+		C1A35F8917F0311F00C1219E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -719,7 +719,6 @@
 				03CD9E9D155EAB960004E0A4 /* Foundation.framework in Frameworks */,
 				03CD9E9F155EAB960004E0A4 /* CoreGraphics.framework in Frameworks */,
 				03CD9EA1155EAB960004E0A4 /* CoreData.framework in Frameworks */,
-				3F49D71F1689B2620090B2BA /* libMobClickLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -891,6 +890,7 @@
 		03CD9E8B155EAB960004E0A4 = {
 			isa = PBXGroup;
 			children = (
+				4E4BF83F15D4AD7200FB1247 /* libxml2.2.7.3.dylib */,
 				03CD9EA2155EAB960004E0A4 /* Color */,
 				03CD9EBE155EAB960004E0A4 /* ColorTests */,
 				03CD9E99155EAB960004E0A4 /* Frameworks */,
@@ -932,7 +932,6 @@
 		03CD9EA2155EAB960004E0A4 /* Color */ = {
 			isa = PBXGroup;
 			children = (
-				3F49D7221689B2780090B2BA /* MobCheck */,
 				0378E5AD158B21AE00CFE169 /* DTO */,
 				0378E5A6158B1CE400CFE169 /* DAO */,
 				03B5D99C1577916200E89FC2 /* Service */,
@@ -1244,6 +1243,7 @@
 		03CD9F1D155EB6E50004E0A4 /* res */ = {
 			isa = PBXGroup;
 			children = (
+				C1A35F8917F0311F00C1219E /* Default-568h@2x.png */,
 				031FF473157E4C3B00CE6784 /* my_avatar_mask.png */,
 				030286AB1562A2BE002BECC3 /* Default.png */,
 				030286AC1562A2BE002BECC3 /* Default@2x.png */,
@@ -1396,15 +1396,6 @@
 			name = DiaryView;
 			sourceTree = "<group>";
 		};
-		3F49D7221689B2780090B2BA /* MobCheck */ = {
-			isa = PBXGroup;
-			children = (
-				3F49D7211689B26C0090B2BA /* MobClick.h */,
-				3F49D71E1689B2620090B2BA /* libMobClickLibrary.a */,
-			);
-			name = MobCheck;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1451,6 +1442,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
+				TargetAttributes = {
+					03CD9E95155EAB960004E0A4 = {
+						DevelopmentTeam = L3MUMFQJ9E;
+					};
+				};
 			};
 			buildConfigurationList = 03CD9E90155EAB960004E0A4 /* Build configuration list for PBXProject "QieZi" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1504,6 +1500,7 @@
 				03CD9FB4155EB6FB0004E0A4 /* camera_icon_black.png in Resources */,
 				03CD9FB5155EB6FB0004E0A4 /* camera_icon_black@2x.png in Resources */,
 				03CD9FB6155EB6FB0004E0A4 /* camera_icon_white.png in Resources */,
+				C1A35F8A17F0311F00C1219E /* Default-568h@2x.png in Resources */,
 				03CD9FB7155EB6FB0004E0A4 /* camera_icon_white@2x.png in Resources */,
 				03CD9FB8155EB6FB0004E0A4 /* centerButton@2x.png in Resources */,
 				03CD9FB9155EB6FB0004E0A4 /* comment_selected.png in Resources */,
@@ -1815,7 +1812,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: lan huaiyu (AH5N8LYV8V)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1832,7 +1830,7 @@
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = "-lxml2";
-				PROVISIONING_PROFILE = "826D3785-D67E-4C6A-A7BB-5EDEE901E92D";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1844,7 +1842,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: lan huaiyu (AH5N8LYV8V)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1855,7 +1854,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
-				PROVISIONING_PROFILE = "826D3785-D67E-4C6A-A7BB-5EDEE901E92D";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1866,17 +1865,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Jiuzhou Zhitong Technology Co.,Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Jiuzhou Zhitong Technology Co.,Ltd";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Color/QieZi-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "Color/QieZi-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/ColorTests\"",
-				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = QieZi;
+				PROVISIONING_PROFILE = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
 				SDKROOT = iphoneos5.1;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1887,17 +1886,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Jiuzhou Zhitong Technology Co.,Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Jiuzhou Zhitong Technology Co.,Ltd";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Color/QieZi-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "Color/QieZi-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/ColorTests\"",
-				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = QieZi;
+				PROVISIONING_PROFILE = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
 				SDKROOT = iphoneos5.1;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

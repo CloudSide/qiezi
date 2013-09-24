@@ -1,6 +1,7 @@
 //
 //  JoinCircleInterface.h
 //  Color
+//  加入圈子
 //  Created by chao han on 12-6-9.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

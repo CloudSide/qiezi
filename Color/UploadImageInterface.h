@@ -1,6 +1,7 @@
 //
 //  UploadImageInterface.h
 //  Color
+//  上传图片接口
 //  Created by chao han on 12-5-23.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

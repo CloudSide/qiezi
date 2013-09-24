@@ -12,5 +12,5 @@
 
 -(UIImage*)getSubImage:(CGRect)rect; 
 -(UIImage*)scaleToSize:(CGSize)size;  
--(NSString *) image2String;
+-(NSString *) image2String;//对UIImage进行Base64编码
 @end

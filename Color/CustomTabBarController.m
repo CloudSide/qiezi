@@ -39,7 +39,9 @@
 
 //- (void)viewDidAppear:(BOOL)animated{
 -(void)viewDidLoad{
-    self.mUploadMediaService = [[[UploadMediaService alloc] init] autorelease];
+    self.mUploadMediaService = [[[UploadMediaService alloc] init] autorelease];//初始化上传线程池
+    
+    // 监测网络情况
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name: kReachabilityChangedNotification
@@ -68,6 +70,9 @@
 //    self.previewOverlayView.backgroundColor = [UIColor blackColor];
     
 //    CALayer *mask = [CALayer layer];
+//    mask.frame = self.previewOverlayView.frame;
+//    mask.contents = (id)[[UIImage imageNamed:@"camera_overlay.png"] CGImage];
+//    self.previewOverlayView.layer.mask = mask;
 //    self.previewOverlayView.layer.masksToBounds = YES;
     
     //评论心跳定时器
@@ -86,19 +91,26 @@
 
 - (void)customTabBar{
     self.tabBarStack = [[[NSMutableArray alloc] init] autorelease];
+    
+    //背景颜色
     UIImageView *imgView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"tabBarBackground"]];
     imgView.frame = CGRectMake(0, 
-                               self.view.frame.size.height - imgView.frame.size.height, 
+                               self.view.frame.size.height - imgView.frame.size.height,
                                imgView.frame.size.width, 
                                imgView.frame.size.height);
+                    //CGRectMake(0, 425, imgView.image.size.width, imgView.image.size.height);
     [self.view addSubview:imgView];
-    UIView *_viewGroup = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - imgView.frame.size.height + 8, imgView.frame.size.width, imgView.frame.size.height - 8)];
+    
+    //创建按钮
+    UIView *_viewGroup = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - imgView.frame.size.height + 8,
+                                                                  imgView.frame.size.width, imgView.frame.size.height - 8)];
     self.baseBtnGroup = _viewGroup;
     self.baseBtnGroup.userInteractionEnabled = YES;
     [_viewGroup release];
     [self.view addSubview:self.baseBtnGroup];
-    [self.tabBarStack addObject:self.baseBtnGroup];
-    int viewCount = 5;
+    [self.tabBarStack addObject:self.baseBtnGroup];//将tabbar添加到tabbar栈中
+    
+    int viewCount = 5;//self.viewControllers.count > 5 ? 5 : self.viewControllers.count;
     self.buttons = [NSMutableArray arrayWithCapacity:viewCount];
     double _width = self.baseBtnGroup.frame.size.width / viewCount;
     double _height = self.baseBtnGroup.frame.size.height;
@@ -131,6 +143,8 @@
     }
 
     [imgView release];
+//    [self selectedTab:[self.buttons objectAtIndex:0]];
+    
 }
 
 #pragma mark - tabbar 按钮点击事件
@@ -139,6 +153,7 @@
 }
 
 - (void)selectedTab:(UIButton *)button{
+    //当点击某个按钮时，先将附近页面的当前圈子跳转至当前圈子位置
     NearByUIViewController *nearByController = (NearByUIViewController *)[((UINavigationController *)[self.viewControllers objectAtIndex:0]).viewControllers objectAtIndex:0];
     NSMutableArray *circleViewArray = nearByController.circleViewArray;
     
@@ -204,13 +219,17 @@
     
     [super dealloc];
 }
+
+#pragma mark - 网络监听回调方法
 - (void)reachabilityChanged:(NSNotification *)note {
     Reachability* curReach = [note object];
     NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
     NetworkStatus status = [curReach currentReachabilityStatus];
     
-    if (status != NotReachable) {//有
+    if (status != NotReachable) {//有网
 //        NSLog(@"--------------- upload all waiting uploading media ------------------status %d",status);
+        
+        //上传所有待上传media
         PendingUploadDao *dao = [[PendingUploadDao alloc] init];
         [dao repairAllTask];
         NSArray *taskArray = [dao getAllWaitUploadPendingUploadTaskDTO];
@@ -220,11 +239,13 @@
         [dao release];
     }
 }
+
+#pragma mark - 处理tabbar 
 -(void)pushTabBar:(UIView *)tabBarView//push tabbar
 {
     if (tabBarView) {
         [self.tabBarStack addObject:tabBarView];
-        UIView *lastTabBar = [self.baseBtnGroup retain];
+        UIView *lastTabBar = [self.baseBtnGroup retain];//当前还未隐藏的tabbar
         self.baseBtnGroup = tabBarView;
         
         CGRect groupFrame = lastTabBar.frame;
@@ -236,6 +257,7 @@
         [self.view addSubview:tabBarView];
         
         [UIView beginAnimations:nil context:nil];
+        //    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         [UIView setAnimationDuration:0.38];
         lastTabBar.alpha = 0;
         lastTabBar.frame = CGRectMake(-self.view.frame.size.width / 2,
@@ -260,11 +282,12 @@
 -(void)popTabBar//pop tabbar
 {
     if ([self.tabBarStack count]>1) {
-        UIView *currentTabBar = [self.baseBtnGroup retain];
-        UIView *needShowTabBar = [self.tabBarStack objectAtIndex:self.tabBarStack.count - 2];
+        UIView *currentTabBar = [self.baseBtnGroup retain];//当前即将退出的tabbar
+        UIView *needShowTabBar = [self.tabBarStack objectAtIndex:self.tabBarStack.count - 2];//即将显示的tabbar
         self.baseBtnGroup = needShowTabBar;
         
         [UIView beginAnimations:nil context:nil];
+        //    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         [UIView setAnimationDuration:0.38];
         currentTabBar.alpha = 0;
         currentTabBar.frame = CGRectMake(self.view.frame.size.width / 2,
@@ -288,11 +311,12 @@
 -(void)popToRootTabBar
 {
     if ([self.tabBarStack count]>1) {
-        UIView *currentTabBar = [self.baseBtnGroup retain];
-        UIView *needShowTabBar = [self.tabBarStack objectAtIndex:0];
+        UIView *currentTabBar = [self.baseBtnGroup retain];//当前即将退出的tabbar
+        UIView *needShowTabBar = [self.tabBarStack objectAtIndex:0];//即将显示的tabbar
         self.baseBtnGroup = needShowTabBar;
         
         [UIView beginAnimations:nil context:nil];
+        //    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         [UIView setAnimationDuration:0.38];
         currentTabBar.alpha = 0;
         currentTabBar.frame = CGRectMake(self.view.frame.size.width / 2,
@@ -329,7 +353,7 @@
     picker.videoMaximumDuration = 10;
     picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-        picker.cameraFlashMode = [MySingleton sharedSingleton].lastCameraFlashMode;
+        picker.cameraFlashMode = [MySingleton sharedSingleton].lastCameraFlashMode;//使用上次闪光灯状态
     }
     
     NSArray *temp_MediaTypes = [UIImagePickerController availableMediaTypesForSourceType:picker.sourceType];
@@ -355,10 +379,12 @@
     BOOL exists = [fileManager fileExistsAtPath:pendingUploadsPath isDirectory:&isDirectory];
     if (!exists || !isDirectory) {
         [fileManager removeItemAtPath:pendingUploadsPath error:nil];
+
+        //创建目录
         [fileManager createDirectoryAtPath:pendingUploadsPath withIntermediateDirectories:NO attributes:nil error:nil];
     }
     
-    UIImage *tmpImage = [[UIUtil scaleAndRotateImage:image] retain];//[[image resizedImage:CGSizeMake(640, 640)
+    UIImage *tmpImage = [[UIUtil scaleAndRotateImage:image] retain];//[[image resizedImage:CGSizeMake(640, 640) interpolationQuality:kCGInterpolationLow] retain];//[[UIUtil scaleAndRotateImage:image] retain];
     CGFloat width = CGImageGetWidth(tmpImage.CGImage); 
     CGFloat height = CGImageGetHeight(tmpImage.CGImage);
     CGFloat smallerWidth = width < height ? width : height;
@@ -378,10 +404,17 @@
     if(success) {
         success = [fileManager removeItemAtPath:imageFile error:&error];
     }
+    
+//    //保存图片至相册
+//    UIImageWriteToSavedPhotosAlbum(clipedImage, self,  nil, nil);  
+    
     [UIImageJPEGRepresentation(clipedImage, 0.5f) writeToFile:imageFile atomically:YES];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:[NSString stringWithFormat:@"circleid_%d",[MySingleton sharedSingleton].currentCircleId] 
                                                         object:nil 
                                                       userInfo:[NSDictionary dictionaryWithObjectsAndKeys:imageFile,@"imageFilePath",@"0",@"mediaType",nil]];
+    
+    //保存上传任务
     PendingUploadDao *dao = [[PendingUploadDao alloc] init];
     PendingUploadTaskDTO *dto = [[PendingUploadTaskDTO alloc] init];
     dto.filePath = imageFile;
@@ -399,6 +432,12 @@
     
     [dto release];
     [dao release];
+    
+//    //上传照片
+//    self.mUploadImageInterface = [[UploadImageInterface alloc] init];
+//    self.mUploadImageInterface.delegate = self;
+//    [self.mUploadImageInterface doUploadImage:clipedImage description:@"评论" circleId:[MySingleton sharedSingleton].currentCircleId];
+    
     [clipedImage release];
 }
 
@@ -415,6 +454,8 @@
     BOOL exists = [fileManager fileExistsAtPath:pendingUploadsPath isDirectory:&isDirectory];
     if (!exists || !isDirectory) {
         [fileManager removeItemAtPath:pendingUploadsPath error:nil];
+        
+        //创建目录
         [fileManager createDirectoryAtPath:pendingUploadsPath withIntermediateDirectories:NO attributes:nil error:nil];
     }
     
@@ -427,14 +468,22 @@
         success = [fileManager removeItemAtPath:videoFile error:&error];
     }
     [videoData writeToFile:videoFile atomically:YES];
-    MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL: [NSURL fileURLWithPath:videoFile]];//
+    
+    //视频截图
+//    MPMoviePlayerViewController *mpviemController =[[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:videoFile]];
+    MPMoviePlayerController *mp = [[MPMoviePlayerController alloc] initWithContentURL: [NSURL fileURLWithPath:videoFile]];//[mpviemController moviePlayer];
     UIImage *image=[mp thumbnailImageAtTime:(NSTimeInterval)1 timeOption:MPMovieTimeOptionNearestKeyFrame];
+//    [mpviemController release];
+    
+    //等比缩放操作
     UIImage *tmpImage = [[UIUtil scaleAndRotateImage:image] retain];//[[image resizedImage:CGSizeMake(640, 640) interpolationQuality:kCGInterpolationLow] retain];//[[UIUtil scaleAndRotateImage:image] retain];
     [mp stop];
     [mp release];
     CGFloat width = CGImageGetWidth(tmpImage.CGImage); 
     CGFloat height = CGImageGetHeight(tmpImage.CGImage);
     CGFloat smallerWidth = width < height ? width : height;
+    
+    //截取正方形图片
     UIImage *thumbnailImage ;
     if (width < height) {//宽小
         thumbnailImage = [[tmpImage getSubImage:CGRectMake(0, (height - smallerWidth) / 2, smallerWidth, smallerWidth)] retain];
@@ -442,12 +491,21 @@
         thumbnailImage = [[tmpImage getSubImage:CGRectMake((width - smallerWidth) / 2, 0, smallerWidth, smallerWidth)] retain];
     }
     [tmpImage release];
+    
+    //创建截屏地址
     NSString *imageFile = [pendingUploadsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"shortcut_%d.jpg",(NSInteger)[now timeIntervalSince1970]]];
+    
+    //处理已存在文件
     success = [fileManager fileExistsAtPath:imageFile];
     if(success) {
         success = [fileManager removeItemAtPath:imageFile error:&error];
     }
+    
+    //保存截屏文件
     [UIImageJPEGRepresentation(thumbnailImage, 1.0f) writeToFile:imageFile atomically:YES];
+    
+    
+    //保存上传任务
     PendingUploadDao *dao = [[PendingUploadDao alloc] init];
     PendingUploadTaskDTO *dto = [[PendingUploadTaskDTO alloc] init];
     dto.filePath = videoFile;
@@ -470,6 +528,10 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:[NSString stringWithFormat:@"circleid_%d",[MySingleton sharedSingleton].currentCircleId] 
                                                         object:nil 
                                                       userInfo:[NSDictionary dictionaryWithObjectsAndKeys:imageFile,@"imageFilePath",@"1",@"mediaType",nil]];
+    
+//    self.mUploadVideoInterface = [[UploadVideoInterface alloc] init];
+//    [self.mUploadVideoInterface doUploadVideo:videoData thumbnail:thumbnailImage description:@"评论" circleId:[MySingleton sharedSingleton].currentCircleId];
+    
     [thumbnailImage release];
     [videoData release];
 }
@@ -478,6 +540,7 @@
 -(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        //保存上次闪光灯状态
         [MySingleton sharedSingleton].lastCameraFlashMode = picker.cameraFlashMode;
     }
     
@@ -485,12 +548,21 @@
     
     if ([mediaType isEqualToString:@"public.image"]){
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        
+        //保存图片至相册
         UIImageWriteToSavedPhotosAlbum(image, self,  nil, nil);  
+        
+        //后台处理照片
         [self performSelectorInBackground:@selector(saveImage:) withObject:image];
     }
     else if([mediaType isEqualToString:@"public.movie"]){
         NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
+        
+        //保存视频至相册
         UISaveVideoAtPathToSavedPhotosAlbum([videoURL path], self, nil, nil);
+        
+        //后台处理照片
+//        [self performSelectorInBackground:@selector(saveVideo:) withObject:videoURL];
         [self saveVideo:videoURL];
     }
     
@@ -525,6 +597,7 @@
 #pragma mark addSomeElements
 -(void)addSomeElements:(UIViewController *)viewController{
 	//Add the motion view here, PLCameraView and picker.view are both OK
+//	UIView *PLCameraView=[self findView:viewController.view withName:@"PLCameraView"];
     self.PLCameraView = [self findView:viewController.view withName:@"PLCameraView"];
     
     [self.PLCameraView insertSubview:self.cameraAimView  atIndex:1];
@@ -545,6 +618,8 @@
 	
 	//Get ImageView For Save
 	UIImageView *bottomBarImageForSave = [bottomBar.subviews objectAtIndex:0];
+	
+	//Get Button 0 重拍按钮
 	UIButton *retakeButton=[bottomBarImageForSave.subviews objectAtIndex:0];
     [retakeButton addTarget:self
                      action:@selector(hidePreviewOverlayView)
@@ -554,25 +629,33 @@
 	UIButton *useButton=[bottomBarImageForSave.subviews objectAtIndex:1];
 	[useButton setTitle:@"发布" forState:UIControlStateNormal];
 	
-	//Get ImageView For Camera
-	UIImageView *bottomBarImageForCamera = [bottomBar.subviews objectAtIndex:1];
-//	
-//	//Set Bottom Bar Image
-//	UIImage *image=[[UIImage alloc] initWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"BottomBar.png"]];
-//	bottomBarImageForCamera.image=image;
-//	[image release];
-//	
-	//Get Button 0(The Capture Button)
-	UIButton *cameraButton=[bottomBarImageForCamera.subviews objectAtIndex:0];
-	[cameraButton addTarget:self
-                     action:@selector(showPreviewOverlayViewDelay)
-           forControlEvents:UIControlEventTouchUpInside];
-//	
+    
+    
+//	//Get ImageView For Camera
+//	UIImageView *bottomBarImageForCamera = [bottomBar.subviews objectAtIndex:1];
+////	
+////	//Set Bottom Bar Image
+////	UIImage *image=[[UIImage alloc] initWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"BottomBar.png"]];
+////	bottomBarImageForCamera.image=image;
+////	[image release];
+////	
+//	//Get Button 0(The Capture Button) 拍照按钮
+//	UIButton *cameraButton=[bottomBarImageForCamera.subviews objectAtIndex:0];
+//	[cameraButton addTarget:self
+//                     action:@selector(showPreviewOverlayViewDelay)
+//           forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
+//
 //	//Get Button 1
 //	UIButton *cancelButton=[bottomBarImageForCamera.subviews objectAtIndex:1];	
 //	[cancelButton setTitle:@"取消" forState:UIControlStateNormal];
 //	[cancelButton addTarget:self action:@selector(hideTouchView) forControlEvents:UIControlEventTouchUpInside];
 }
+
+//稍后显示预览遮罩
 -(void)showPreviewOverlayViewDelay{
     [NSTimer scheduledTimerWithTimeInterval: 2
 									 target: self
@@ -619,6 +702,8 @@
 //        }
 //    }
 }
+
+//隐藏预览遮罩
 -(void)hidePreviewOverlayView{
     [self.previewOverlayView removeFromSuperview];
 }
@@ -676,6 +761,8 @@
     self.mNewCommentsHeartbeatInterface.delegate = nil;
     self.mNewCommentsHeartbeatInterface = nil;
 }
+
+#pragma mark - 未读评论数 心跳方法
 -(void)loadNewCommentsAmount
 {
     self.mNewCommentsHeartbeatInterface = [[[NewCommentsHeartbeatInterface alloc] init] autorelease];

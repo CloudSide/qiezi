@@ -18,9 +18,11 @@
             circleId:(NSInteger) cid lon:(double)lon lat:(double)lat
               taskId:(long long int)tId{
     self.needCacheFlag = NO;
-    _timeOutSecond = 30;
+    _timeOutSecond = 30;//网络超时30秒
+    
     taskId = tId;
     self.baseDelegate = self;
+    
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[DeviceUtil getMacAddress] forKey:@"deviceId"];
     [dict setObject:[NSString stringWithFormat:@"%.11g",lon] forKey:@"lon"];
@@ -51,6 +53,17 @@
     
     [super dealloc];
 }
+
+//{
+//    "returncode": "0",
+//    "content": {
+//        "mediaId": "580000010_1338617732",
+//        "ctime": "1338617732",
+//        "circleId": "100",
+//        "thumbnailUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/thumbnail/580000010/small_580000010_1338617732.jpg",
+//        "originalUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/original/580000010/580000010_1338617732.jpg"
+//    }
+//}
 
 #pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{

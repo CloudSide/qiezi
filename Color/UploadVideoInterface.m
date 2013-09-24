@@ -20,7 +20,7 @@
          description:(NSString *)description circleId:(NSInteger) cid 
                  lon:(double)lon lat:(double)lat taskId:(long long int)tId{
     self.needCacheFlag = NO;
-    _timeOutSecond = 30;
+    _timeOutSecond = 30;//网络超时30秒
     
     taskId = tId;
     self.baseDelegate = self;
@@ -57,6 +57,18 @@
     [super dealloc];
 }
 
+
+//{
+//    "returncode": "0",
+//    "content": {
+//        "mediaId": "580000015_1339668430",
+//        "ctime": "1339668430",
+//        "circleId": "231",
+//        "originalUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/original/580000015/580000015_1339668430.3gp",
+//        "thumbnailUrl": "http://12qiezi-12qiezi.stor.sinaapp.com/thumbnail/580000015/small_580000015_1339668430.jpg"
+//    }
+//}
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
         NSDictionary *content = [responseDict objectForKey:@"content"];

@@ -35,9 +35,22 @@
     
     [super dealloc];
 }
+
+//{
+//    "returncode": "0",
+//    "content": [
+//                {
+//                    "userId": "580000005",
+//                    "name": "abcddd",
+//                    "avatar": "http://12qiezi-colorstorage.stor.sinaapp.com/avatar/580000005/580000005_1338050833.png"
+//                }
+//                ]
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
-        NSMutableArray *friendArray = [[NSMutableArray alloc] init];
+        NSMutableArray *friendArray = [[NSMutableArray alloc] init];//返回结果
         
         NSArray *content = [responseDict objectForKey:@"content"];
         

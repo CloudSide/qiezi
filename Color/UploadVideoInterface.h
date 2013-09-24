@@ -1,6 +1,7 @@
 //
 //  UploadVideoInterface.h
 //  Color
+//  上传视频接口
 //  Created by chao han on 12-5-24.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
@@ -12,6 +13,8 @@
 @interface UploadVideoInterface : BaseInterface <BaseInterfaceDelegate>{
     long long int taskId;
 }
+
+
 @property (nonatomic,assign) id<UploadVideoInterfaceDelegate> delegate;
 
 -(void)doUploadVideo:(NSData *)videoData thumbnail:(UIImage *)thumbnail 

@@ -16,7 +16,7 @@
 @property (nonatomic,assign) id<CommentDelegate> delegate;
 
 @property (nonatomic,retain) NSString *feedId;//回复人id
-@property (nonatomic,retain) NSString *feedUsername;
+@property (nonatomic,retain) NSString *feedUsername;//回复人名称
 
 -(id)initWithFeedId:(NSString *)feedId andFeedUserName:(NSString *)feedUsername;
 @end

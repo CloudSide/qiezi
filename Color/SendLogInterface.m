@@ -49,6 +49,9 @@
 #pragma mark - ASIHttpRequestDelegate
 -(void)requestFinished:(ASIHTTPRequest *)request {    
     NSString *responseBody = request.responseString;
+    NSLog(@"==============%@",responseBody);
+
+    //删除日志文件
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"log.txt"];

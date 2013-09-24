@@ -1,6 +1,7 @@
 //
 //  CreateComment.h
 //  Color
+//  发表评论
 //  Created by chao han on 12-6-9.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

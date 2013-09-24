@@ -48,7 +48,7 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-
+//初始化当前圈子对应的viewGroup
 -(void)initTopViewGroup{
     [self.circleViewArray removeAllObjects];
     
@@ -64,7 +64,7 @@
     [self initOperScrollView];
 }
 
-
+//初始化当前圈子对应的viewGroup
 -(void)addCircleToTopViewGroup:(NSArray *)newCircles{
     for (CircleModel *cm in newCircles) {
         NSArray *arr1 = [[NSBundle mainBundle] loadNibNamed:@"NearByPhotoView" owner:self options:nil];  
@@ -80,17 +80,17 @@
 }
 
 
-
+//初始化操作scroll view
 -(void)initOperScrollView{
     for (UIView *view in [self.operScrollView subviews]) {
         [view removeFromSuperview];
     }
     
-    
+    //预留一个新团队按钮的页面
     self.operScrollView.contentSize = CGSizeMake(([self.circleArray count] + 1) * self.operScrollView.frame.size.width,
                                                  self.operScrollView.frame.size.height);
     
-    
+    //初始化pageControl
     self.operPageControl.numberOfPages = [self.circleArray count] + 1;
     
     for (int i=0; i< [self.circleArray count]; i++) {
@@ -101,7 +101,7 @@
                                                                     self.operScrollView.frame.size.width ,
                                                                     self.operScrollView.frame.size.height)];
         
-        UILabel *countLabel = [[UILabel alloc] init];
+        UILabel *countLabel = [[UILabel alloc] init];//数量
         countLabel.textColor = [UIColor whiteColor];
         countLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
         countLabel.font = [UIFont boldSystemFontOfSize:14];//
@@ -113,12 +113,12 @@
                                       countLabelFontSize.height);
         
         UIImageView *cameraIcon = [[UIImageView alloc] initWithImage:
-                                   [UIImage imageNamed:@"camera_icon_white.png"]];
+                                   [UIImage imageNamed:@"camera_icon_white.png"]];//照相机图标
         
-        UILabel *namesLabel = [[UILabel alloc] init];
+        UILabel *namesLabel = [[UILabel alloc] init];//用户
         namesLabel.textColor = [UIColor whiteColor];
         namesLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-        namesLabel.font = [UIFont boldSystemFontOfSize:14];
+        namesLabel.font = [UIFont boldSystemFontOfSize:14];//名称
         
         NSMutableString *names = [NSMutableString stringWithFormat:@""];
 
@@ -141,13 +141,13 @@
                                       namesLabelFontSize.width,
                                       namesLabelFontSize.height);
         
-        
-        CGFloat width = countLabel.frame.size.width + 4 + cameraIcon.frame.size.width + 4 + namesLabel.frame.size.width;
-        CGFloat height = cameraIcon.frame.size.height;
+        //计算居中偏移量
+        CGFloat width = countLabel.frame.size.width + 4 + cameraIcon.frame.size.width + 4 + namesLabel.frame.size.width;//总宽度
+        CGFloat height = cameraIcon.frame.size.height;//总高度
         CGFloat beginX = (self.operScrollView.frame.size.width - width) / 2;
         CGFloat beginY = (self.operScrollView.frame.size.height - height) / 2;
         
-        
+        //添加view
         countLabel.frame = CGRectMake(beginX , beginY - 2, 
                                       countLabelFontSize.width,
                                       countLabelFontSize.height);
@@ -182,7 +182,7 @@
 //    newGroupBtn.titleLabel.text = @"新团体";
     [newGroupBtn setTitle:@"新团体" forState:UIControlStateNormal];
     
-    
+    //新团体按钮点击事件
     [newGroupBtn addTarget:self 
                     action:@selector(createNewCircle:) 
           forControlEvents:UIControlEventTouchUpInside];
@@ -191,7 +191,7 @@
     [self.operScrollView addSubview:newGroupBtn];
     [newGroupBtn release];
 
-    
+    //刷新页面
     [self scrollViewDidScroll:self.operScrollView];
 }
 
@@ -241,9 +241,13 @@
 
 #pragma mark - View lifecycle
 
+static CGFloat const TTTPlayViewControllerMargin = 20.0;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    
     // Do any additional setup after loading the view from its nib.
     self.circleViewArray = [[[NSMutableArray alloc] init] autorelease];
     self.circleArray = [[[NSMutableArray alloc] init] autorelease];
@@ -251,7 +255,7 @@
     
     self.operPageControl.currentPage = 0;
     
-    
+    //添加默认页面
     NSArray *arr1 = [[NSBundle mainBundle] loadNibNamed:@"NearByDefaultView" owner:self options:nil];  
     NearByDefaultView *mNearByDefaultView = [arr1 objectAtIndex:0];
     for (UIView *view in [self.topViewGroup subviews]) {
@@ -263,13 +267,53 @@
     if ([MySingleton sharedSingleton].lon != 0 && [MySingleton sharedSingleton].lat != 0) {
         [self getNearByShowAllInterface];
     }else{
-        
+        //注册通知
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getNearByShowAllInterface) name:kCLLocationManagerDidStarted object:nil];
     }
     
+//    CGFloat topHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+//    UITabBar *tabBar = self.tabBarController.tabBar;
+//    CGFloat bottomHeight = (tabBar.translucent ? tabBar.frame.size.height : 0.0);
+//    
+//    NSDictionary *metrics = @{@"topHeight" : @(topHeight + TTTPlayViewControllerMargin),
+//                              @"bottomHeight" : @(bottomHeight + TTTPlayViewControllerMargin),
+//                              @"margin" : @(TTTPlayViewControllerMargin)};
+////    NSDictionary *bindings = NSDictionaryOfVariableBindings(new)
+////    
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-margin-[_gameView]-margin-|"
+//                                                                      options:0 metrics:metrics
+//                                                                        views:bindings]];
+//    
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-margin-[pauseButton(==newButton)]-[newButton]-margin-|"
+//                                                                      options:0 metrics:metrics
+//                                                                        views:bindings]];
+//    
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-topHeight-[_gameView]-margin-[newButton]-bottomHeight-|"
+//                                                                      options:0 metrics:metrics
+//                                                                        views:bindings]];
+//    
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:pauseButton
+//                                                          attribute:NSLayoutAttributeBaseline
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:newButton
+//                                                          attribute:NSLayoutAttributeBaseline
+//                                                         multiplier:1.0
+//                                                           constant:0.0]];
+    
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        
+        CGRect frame = self.parentView.frame;
+        frame.origin.y += 20;
+        self.parentView.frame = frame;
+
+        
+    }
+#endif
+    
 }
 
-
+//附近接口
 -(void)getNearByShowAllInterface{
     self.mNearByShowAllInterface = [[[NearByShowAllInterface alloc] init] autorelease];
     self.mNearByShowAllInterface.delegate = self;
@@ -314,7 +358,7 @@
 //#pragma mark - ActionSheet Delegate Methods
 //- (void) actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 //{
-
+//    if (buttonIndex == 0)//加入团体
 //    {
         CGFloat pageWidth = self.operScrollView.frame.size.width;
         int currPage = floor((self.operScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
@@ -324,9 +368,9 @@
             [MySingleton sharedSingleton].currentCircleId = [cm.cId intValue];
         }
         
-        
+        //根据当前显示的圈子动态改变拍照按钮的事件和图片
         CustomTabBarController *tabbar = (CustomTabBarController *)self.tabBarController;
-        UIButton *takePicBtn = (UIButton *)[tabbar.baseBtnGroup viewWithTag:9];
+        UIButton *takePicBtn = (UIButton *)[tabbar.baseBtnGroup viewWithTag:9];//拍照按钮
         
         [takePicBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"]] forState:UIControlStateNormal];
         [takePicBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logoPressed" ofType:@"png"]] forState:UIControlStateHighlighted];
@@ -337,20 +381,20 @@
         [takePicBtn addTarget:tabbar action:@selector(selectedTab:) forControlEvents:UIControlEventTouchDown];
         [takePicBtn addTarget:tabbar action:@selector(setSelectedTab:) forControlEvents:UIControlEventTouchUpInside];
         [takePicBtn addTarget:tabbar action:@selector(setSelectedTab:) forControlEvents:UIControlEventTouchUpOutside];
-
+//    }
 }
 
 #pragma mark - create new circle btn method
 -(void)createNewCircle:(UIButton *)button
 {
-    
+    //TODO 判断是否存在没有拍照的新圈子，若存在则不新建圈子，并且直接跳到该新建圈子的位置
     
     
     self.mCreateCircleInterface = [[CreateCircleInterface alloc] init];
     self.mCreateCircleInterface.delegate = self;
     [self.mCreateCircleInterface createCircle];
     
-    
+    //TODO 添加indecator等待标志
 }
 
 #pragma mark - UIScrollViewDelegate method
@@ -361,7 +405,7 @@
         int currPage = floor((self.operScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
         self.operPageControl.currentPage = currPage;
         
-        
+        //更换当前circle view
         if (currentCircleViewIndex != currPage) {
             currentCircleViewIndex = currPage;
             
@@ -373,9 +417,9 @@
                 [self.topViewGroup addSubview:[self.circleViewArray objectAtIndex:currentCircleViewIndex]];
             }
             
-            
+            //根据当前显示的圈子动态改变拍照按钮的事件和图片
             CustomTabBarController *tabbar = (CustomTabBarController *)self.tabBarController;
-            UIButton *takePicBtn = (UIButton *)[tabbar.baseBtnGroup viewWithTag:9];
+            UIButton *takePicBtn = (UIButton *)[tabbar.baseBtnGroup viewWithTag:9];//拍照按钮
             if (currentCircleViewIndex >= [self.circleViewArray count]) {
                 [takePicBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logoJoinGroup@2x" ofType:@"png"]] forState:UIControlStateNormal];
                 [takePicBtn setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logoJoinGroupPressed@2x" ofType:@"png"]] forState:UIControlStateHighlighted];
@@ -462,8 +506,8 @@
         ++i;
     }
     
-    if (!foundFlag) {
-        [self createNewCircle:nil];
+    if (!foundFlag) {//若没有找到上次所在圈子
+        [self createNewCircle:nil];//创建新圈子
     }
     
     self.mNearByShowAllInterface.delegate = nil;
@@ -474,11 +518,11 @@
     [self performSelector:@selector(initFindUserListTimer) withObject:nil afterDelay:14];
     [self performSelector:@selector(initFindNearbyUsersTimer) withObject:nil afterDelay:14];
     
-    [self performSelector:@selector(getNearByShowAllInterface) withObject:nil afterDelay:60*60];
+    [self performSelector:@selector(getNearByShowAllInterface) withObject:nil afterDelay:60*60];//每小时重置一次附近圈子
     
 }
 -(void)getAllDidFailed:(NSString *)errorMsg{
-    
+    //获取回忆列表失败
     self.mNearByShowAllInterface.delegate = nil;
     self.mNearByShowAllInterface = nil;
     
@@ -541,13 +585,13 @@
 -(void)initFindNewMediaListTimer
 {
     if (!self.findNewMediaTimer) {
-        
+        //评论心跳定时器
         self.findNewMediaTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(findNewMedia) userInfo:nil repeats:YES];
         [self.findNewMediaTimer fire];
     }
 }
 
-
+//根据圈子id查找对应media心跳方法
 -(void)findNewMedia
 {
     if (self.circleArray.count > 0 && self.operPageControl.currentPage < self.circleArray.count) {
@@ -611,13 +655,13 @@
 -(void)initFindNearbyUsersTimer
 {
     if (!self.findNearbyUsersTimer) {
-        
+        //获取用户列表心跳定时器
         self.findNearbyUsersTimer = [NSTimer scheduledTimerWithTimeInterval:14 target:self selector:@selector(findNearbyUsers) userInfo:nil repeats:YES];
         [self.findNearbyUsersTimer fire];
     }
 }
 
-
+//根据圈子id查找对应userlist心跳方法
 -(void)findNearbyUsers
 {
     self.mNearByUsersHeartbeatInterface = [[[NearByUsersHeartbeatInterface alloc] init] autorelease];
@@ -631,7 +675,7 @@
     [self.nearByUsersArray removeAllObjects];
     self.nearByUsersArray = [NSMutableArray arrayWithArray:userArray];
     
-    
+    //更新附近用户列表
     for (UIView *view in self.circleViewArray) {
         if ([view isMemberOfClass:[NearByPhotoView class]]) {
             NearByPhotoView * nbpv = (NearByPhotoView *)view;
@@ -655,13 +699,13 @@
 -(void)initFindUserListTimer
 {
     if (!self.findUserListTimer) {
-        
+        //获取用户列表心跳定时器
         self.findUserListTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(findNewUserList) userInfo:nil repeats:YES];
         [self.findUserListTimer fire];
     }
 }
 
-
+//根据圈子id查找对应userlist心跳方法
 -(void)findNewUserList
 {
     if (self.circleArray.count > 0 && self.operPageControl.currentPage < self.circleArray.count) {
@@ -683,7 +727,7 @@
             }
         }
         
-        
+        //更新view
         for (UIView *view in self.circleViewArray) {
             if ([view isMemberOfClass:[NearByPhotoView class]]) {
                 NearByPhotoView * nbpv = (NearByPhotoView *)view;

@@ -15,7 +15,7 @@
 @property (nonatomic,retain) ASIHTTPRequest *request;
 @property (nonatomic,assign) id<RegisteInterfaceDelegate> delegate;
 
--(void)doRegiste:(NSString *)name avatar:(NSString *) avatar format:(NSString *)format email:(NSString *)email;
+-(void)doRegiste:(NSString *)name avatar:(NSString *) avatar format:(NSString *)format email:(NSString *)email;//注册
 @end
 
 @protocol RegisteInterfaceDelegate

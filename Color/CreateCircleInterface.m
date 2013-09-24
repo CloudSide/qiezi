@@ -14,6 +14,9 @@
 
 @synthesize delegate = _delegate;
 
+//创建 http://12qiezi.sinaapp.com/nearby/createcircle
+//参数deviceId 返回 {"returncode":"0","content":{"circleid":123}}
+
 -(void)createCircle{
     self.needCacheFlag = NO;
     
@@ -37,6 +40,13 @@
     [super dealloc];
 }
 
+//{
+//    "returncode": "0",
+//    "content": {
+//        "circleid": 123
+//        ,"ctime":"1341124227"
+//    }
+//}
 
 #pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{

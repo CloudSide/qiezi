@@ -17,11 +17,16 @@
 
 -(void)getAll{
     self.needCacheFlag = NO;
+    
     self.baseDelegate = self;
+    
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[DeviceUtil getMacAddress] forKey:@"deviceId"];
     [dict setObject:[NSString stringWithFormat:@"%.11g",[MySingleton sharedSingleton].lon] forKey:@"lon"];
     [dict setObject:[NSString stringWithFormat:@"%.10g",[MySingleton sharedSingleton].lat] forKey:@"lat"];
+    
+//    NSLog(@"getAll ----lon:[%@] lat:[%@]",[dict objectForKey:@"lon"],[dict objectForKey:@"lat"]);
+    
     self.interfaceUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/nearby/showall",[MySingleton sharedSingleton].baseInterfaceUrl]];
     self.postKeyValues = dict;
     [dict release];
@@ -35,10 +40,62 @@
     [super dealloc];
 }
 
+//{
+//    "returncode": "0",
+//    "content": {
+//        "user": [
+//                 {
+//                     "userId": "580000001",
+//                     "name": "hhgf",
+//                     "avatar": "http://12qiezi-12qiezi.stor.sinaapp.com/avatar/580000001/580000001_1337697540.JPEG"
+//                 },
+//                 {
+//                     "userId": "580000002",
+//                     "name": "yifei",
+//                     "avatar": "http://12qiezi-12qiezi.stor.sinaapp.com/avatar/580000002/580000002_1337776891.png"
+//                 }
+//                 ],
+//        "circle": [
+//                   {
+//                       "circleId": "111",
+//                        "ctime": "1339211070",
+//                       "user": [
+//                                {
+//                                    "userId": "580000001",
+//                                    "name": "hhgf",
+//                                    "avatar": "http://12qiezi-12qiezi.stor.sinaapp.com/avatar/580000001/580000001_1337697540.JPEG"
+//                                },
+//                                {
+//                                    "userId": "580000001",
+//                                    "name": "hhgf",
+//                                    "avatar": "http://12qiezi-12qiezi.stor.sinaapp.com/avatar/580000001/580000001_1337697540.JPEG"
+//                                }
+//                                ],
+//                       "media": [
+//                                 {
+//                                     "mediaId": "580000001_1338631871",
+//                                     "original": "http://12qiezi-12qiezi.stor.sinaapp.com/original/580000001/580000001_1338631871.jpg"
+//                                    "type": 0,
+//                                 },
+//                                 {
+//                                     "mediaId": "580000001_1338631893",
+//                                     "original": "http://12qiezi-12qiezi.stor.sinaapp.com/original/580000001/580000001_1338631893.jpg"
+//                                 }
+//                                 ]
+//                   }
+//                   ]
+//    }
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
-        NSMutableArray *circleArray = [[NSMutableArray alloc] init];
+        NSMutableArray *circleArray = [[NSMutableArray alloc] init];//返回结果
+        
         NSDictionary *content = [responseDict objectForKey:@"content"];
+        
+        
+        //附近所有人
         NSMutableArray *usersArray = [[NSMutableArray alloc] init];
         NSArray *users = [content objectForKey:@"user"];
         if ([users count] > 0) {
@@ -113,4 +170,7 @@
 -(void)requestIsFailed:(NSString *)errorMsg{
     [self.delegate getAllDidFailed:errorMsg];
 }
+
+
+
 @end

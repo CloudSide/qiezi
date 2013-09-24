@@ -36,6 +36,23 @@
     
     [super dealloc];
 }
+
+//{
+//    "returncode": 0,
+//    "content": 
+//                {
+//                    "user": [
+//                             {
+//                                 "userId": "580000019",
+//                                 "name": "tang",
+//                                 "avatar": "avatar/580000019/580000019_1340088820.jpg"
+//                             }
+//                             ]
+//                }
+//                
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
         NSMutableArray *userArray = [[NSMutableArray alloc] init];//返回结果

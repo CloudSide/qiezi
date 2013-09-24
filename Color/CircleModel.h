@@ -1,6 +1,7 @@
 //
 //  CircleModel.h
 //  Color
+//  圈子model
 //  Created by chao han on 12-6-6.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

@@ -10,7 +10,7 @@
 
 @interface NSDate (DynamicDateString)
 
--(NSString *)getDynamicDateStringFromNow;
+-(NSString *)getDynamicDateStringFromNow;//根据当前时间获取用于显示的时间格式
 
--(BOOL)isSameDay:(NSDate*)date;
+-(BOOL)isSameDay:(NSDate*)date;//比较两个date是否是同一天
 @end

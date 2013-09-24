@@ -1,6 +1,7 @@
 //
 //  DynamicUIViewController.h
 //  Color
+//  动态主界面
 //  Created by chao han on 12-5-12.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
@@ -24,8 +25,8 @@
 }
 
 @property (nonatomic,retain) UITableView *mtableView;
-@property (nonatomic,retain) NSMutableArray *dynamicList;
+@property (nonatomic,retain) NSMutableArray *dynamicList;//动态列表
 
-@property (nonatomic,retain) DynamicInterface *mDynamicInterface;
-@property (nonatomic,retain) DynamicInterface *mDynamicInterfaceForPull;
+@property (nonatomic,retain) DynamicInterface *mDynamicInterface;//动态接口
+@property (nonatomic,retain) DynamicInterface *mDynamicInterfaceForPull;//动态接口--用于下拉刷新
 @end

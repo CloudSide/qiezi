@@ -1,6 +1,7 @@
 //
 //  BaseInterface.h
 //  Color
+//  网络连接父类
 //  Created by chao han on 12-5-23.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
@@ -12,10 +13,10 @@
 @protocol BaseInterfaceDelegate;
 
 @interface BaseInterface : NSObject <ASIHTTPRequestDelegate,DefaultLoginInterfaceDelegate>{
-    NSInteger _timeOutSecond;
+    NSInteger _timeOutSecond;//网络超时时长
 }
 
-@property (nonatomic,assign) BOOL needCacheFlag;
+@property (nonatomic,assign) BOOL needCacheFlag;//接口缓存标识
 @property (nonatomic,retain) ASIHTTPRequest *request;
 @property (nonatomic,assign) id<BaseInterfaceDelegate> baseDelegate;
 @property (nonatomic,retain) NSString *interfaceUrl;

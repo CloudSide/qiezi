@@ -103,7 +103,7 @@
     
     self.diaryList = [[[NSMutableArray alloc] init] autorelease];//回忆列表
     
-    UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 406) style:UITableViewStylePlain];
+    UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.bounds.size.height-54) style:UITableViewStylePlain];
     _table.delegate = self;
     _table.dataSource = self;
     _table.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -111,19 +111,26 @@
     _table.userInteractionEnabled = YES;
     _table.multipleTouchEnabled = YES;
     
-    [self initDiaryHeaderCellView];
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        _table.frame = CGRectMake(0, 20, 320, self.view.bounds.size.height-54-20);
+        [_table setContentInset:UIEdgeInsetsMake(-20, 0, 0, 0)];
+    }
+#endif
+    
+    [self initDiaryHeaderCellView];//初始化头像View
     _table.tableHeaderView = self.mDiaryHeaderCellView;
     
     self.mtableView = _table;
     [_table release];
     
-    
+    //获取历史列表
     self.mMediaByUserIdInterface = [[[MediaByUserIdInterface alloc] init] autorelease];
     self.mMediaByUserIdInterface.delegate = self;
     [self.mMediaByUserIdInterface getMediaByUserIdListByStartTime:0 userId:self.userId];
     _isGettingNextPage = YES;
     
-    
+    //下拉刷新
     if (_refreshHeaderView == nil) {
 		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.mtableView.bounds.size.height, self.view.frame.size.width, self.mtableView.bounds.size.height)];
 		view.delegate = self;
@@ -135,7 +142,7 @@
     
     [self.view addSubview:self.mtableView];
     
-    
+    //获取用户信息
     self.mGetUserInfoInterface = [[[GetUserInfoInterface alloc] init] autorelease];
     self.mGetUserInfoInterface.delegate = self;
     [self.mGetUserInfoInterface getUserInfoByUserId:self.userId];
@@ -180,7 +187,7 @@
         _isGettingNextPage = YES;
         
         NSArray *mediaArray = [[self.diaryList lastObject] objectForKey:@"mediaArray"];
-        MediaModel *mm = [mediaArray objectAtIndex:mediaArray.count - 1];
+        MediaModel *mm = [mediaArray objectAtIndex:mediaArray.count - 1];//照片
         
         self.mMediaByUserIdInterface = [[[MediaByUserIdInterface alloc] init] autorelease];
         self.mMediaByUserIdInterface.delegate = self;
@@ -194,7 +201,7 @@
 #pragma mark - UITableViewDelegate method
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
+    //当前section的照片数量
     NSInteger count = [[[self.diaryList objectAtIndex:[indexPath section]] objectForKey:@"mediaArray"] count];
     
     CGFloat rowHeight = 80;
@@ -214,7 +221,7 @@
     return 35;
 }
 
-
+//返回table header
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSArray *arr1 = [[NSBundle mainBundle] loadNibNamed:@"DiarySectionView" owner:self options:nil];  
     DiarySectionView *mDiarySectionView = [arr1 objectAtIndex:0];
@@ -312,13 +319,13 @@
     for (NSInteger i = count - 1 ; i >= 0 ; --i) {
         NSMutableDictionary *days = [mediaArray objectAtIndex:i];
         if (days) {
-            NSDate *date = [days objectForKey:@"date"];
+            NSDate *date = [days objectForKey:@"date"];//返回的时间
             
-            BOOL foundedFlag = NO;
+            BOOL foundedFlag = NO;//是否找到对应时间标志
             for (NSMutableDictionary *oldDay in self.diaryList) {
-                NSDate *dateInOldArray = [oldDay objectForKey:@"date"];
+                NSDate *dateInOldArray = [oldDay objectForKey:@"date"];//已有集合的时间
                 
-                if ([date isSameDay:dateInOldArray]) {
+                if ([date isSameDay:dateInOldArray]) {//找到相同时间
                     NSMutableArray *picArray = [oldDay objectForKey:@"mediaArray"];
                     [picArray insertObjects:[days objectForKey:@"mediaArray"]
                                   atIndexes:[NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[days objectForKey:@"mediaArray"] count])]];
@@ -335,7 +342,7 @@
     }
 }
 
-
+//用于下拉刷新的delegate
 -(void)getMediaByUserIdListByTimeDidFinished:(NSArray *)mediaArray
 {
     if (mediaArray.count > 0) {
@@ -351,7 +358,7 @@
 
 -(void)getMediaByUserIdListByTimeDidFailed:(NSString *)errorMsg
 {
-    
+    //TODO 获取回忆列表失败
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"获取回忆列表失败" 
 													   message:errorMsg 
 													  delegate:nil
@@ -366,10 +373,13 @@
     [self doneLoadingTableViewData];
 }
 
+#pragma mark -
+#pragma mark Data Source Loading / Reloading Methods
+//下拉刷新
 - (void)reloadTableViewDataSource{
 	
-	
-	
+	//  should be calling your tableviews data source model to reload
+	//  put here just for demo
 	_reloading = YES;
     
     self.mMediaByUserIdInterfaceForPull = [[[MediaByUserIdInterface alloc] init] autorelease];
@@ -377,14 +387,14 @@
     NSTimeInterval time = 0;
     if ([self.diaryList count]>0) {
         NSArray *mediaArray = [[self.diaryList objectAtIndex:0] objectForKey:@"mediaArray"];
-        MediaModel *mm = [mediaArray objectAtIndex:0];
+        MediaModel *mm = [mediaArray objectAtIndex:0];//照片
         time = mm.ctime.timeIntervalSince1970 + 1;
     }
     
     [self.mMediaByUserIdInterfaceForPull getMediaByUserIdListByEndTime:time userId:self.userId];
 }
 
-
+//刷新完成后通知下拉刷新view
 - (void)doneLoadingTableViewData{
 	
 	//  model should call this when its done loading
@@ -393,6 +403,8 @@
 	
 }
 
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
 	
 	[self reloadTableViewDataSource];
@@ -412,19 +424,20 @@
 	
 }
 
+#pragma mark - TabBar button action
 -(void)backAction{
     [self.navigationController popViewControllerAnimated:YES];
     
-    
-    [mCustomTabBarController popTabBar];
+    //移除当前tabbar
+    [mCustomTabBarController popTabBar];//移除当前tabbar
 }
 
 -(void)homeAction{
     [self.navigationController popToRootViewControllerAnimated:YES];
     
-    
-    
-    [mCustomTabBarController popToRootTabBar];
+    //    CustomTabBarController *mCustomTabBarController = (CustomTabBarController *)self.tabBarController;
+    //移除当前tabbar
+    [mCustomTabBarController popToRootTabBar];//移除当前tabbar
     
 }
 
@@ -441,7 +454,7 @@
     self.mGetUserInfoInterface = nil;
 }
 -(void)getUserInfoByUserIdDidFailed:(NSString *)errorMsg{
-    
+    //TODO 获取回忆列表失败
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"获取回忆列表失败" 
 													   message:errorMsg 
 													  delegate:nil

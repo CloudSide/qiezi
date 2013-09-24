@@ -11,9 +11,6 @@
 #import "CustomTabBarController.h"
 #import "DefaultLoginInterface.h"
 #import "SendLogInterface.h"
-#import "MobClick.h"
-
-#define kUMENGAPPKEY                @"50d978af527015327c00000c"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,DefaultLoginInterfaceDelegate,SendLogInterfaceDelegate>
 

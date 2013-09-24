@@ -36,6 +36,19 @@
     
     [super dealloc];
 }
+
+//{
+//returncode: "0",
+//content: [
+//          {
+//              "userId": "580000009",
+//              "name": "\u6807\u54e5",
+//              "avatar": "http:\/\/12qiezi-12qiezi.stor.sinaapp.com\/avatar\/580000009\/580000009_1338540631.jpg"
+//          }
+//          ]
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
         NSArray *content = [responseDict objectForKey:@"content"];

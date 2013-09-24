@@ -1,5 +1,6 @@
 //
 //  InterfaceCache.m
+//  MagFan
 //
 //  Created by chao han on 12-5-30.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.

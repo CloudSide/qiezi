@@ -1,6 +1,7 @@
 //
 //  RemoveMediaInterface.h
 //  Color
+//  删除media接口
 //  Created by chao han on 12-6-24.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //

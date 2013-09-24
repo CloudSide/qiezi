@@ -60,17 +60,24 @@
     
     _hasMorePage = YES;
     
-    UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 406) style:UITableViewStylePlain];
+    UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.bounds.size.height-54) style:UITableViewStylePlain];
     _table.delegate = self;
     _table.dataSource = self;
     _table.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        _table.frame = CGRectMake(0, 20, 320, self.view.bounds.size.height-54-20);
+        [_table setContentInset:UIEdgeInsetsMake(-20, 0, 0, 0)];
+    }
+#endif
     
     self.mtableView = _table;
     [_table release];
     
     [self.view addSubview:self.mtableView];
     
-    
+    //下拉刷新
     if (_refreshHeaderView == nil) {
 		
 		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.mtableView.bounds.size.height, self.view.frame.size.width, self.mtableView.bounds.size.height)];
@@ -112,15 +119,15 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
+//删除照片Notification事件
 -(void)removeMedia:(NSNotification *)notification{
     NSString *mediaId = [notification.userInfo objectForKey:@"mediaId"];
     if (mediaId) {
-        
+        // 需要删除的dict
         NSMutableArray *toDelete = [NSMutableArray array];
         
         for (NSDictionary *dict in self.dynamicList) {
-            NSMutableArray *mediaArray = [dict objectForKey:@"picArray"];
+            NSMutableArray *mediaArray = [dict objectForKey:@"picArray"];//照片数组
             for (MediaModel *media in mediaArray) {
                 if ([mediaId isEqualToString:media.mid]) {
                     [mediaArray removeObject:media];
@@ -157,11 +164,11 @@
     NSDictionary *dynamic = [self.dynamicList objectAtIndex:indexPath.row];
     cell.dynamicDict = dynamic;
     
-    
+    //获取下一页
     if (_hasMorePage && !_isGettingNextPage && indexPath.row == [self.dynamicList count] - 1) {
         _isGettingNextPage = YES;
         NSDictionary *dynamic = [self.dynamicList lastObject];
-        NSArray *picArray = [dynamic objectForKey:@"picArray"];
+        NSArray *picArray = [dynamic objectForKey:@"picArray"];//照片数组
         MediaModel *mm = [picArray objectAtIndex:picArray.count - 1];
         
         self.mDynamicInterface = [[[DynamicInterface alloc] init] autorelease];
@@ -180,7 +187,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     PhotoListViewController *_photoListViewController = [[PhotoListViewController alloc] init];
     NSDictionary *dynamic = [self.dynamicList objectAtIndex:indexPath.row];
-    NSArray *picArray = [dynamic objectForKey:@"picArray"];
+    NSArray *picArray = [dynamic objectForKey:@"picArray"];//照片数组
     MediaModel *mm = [picArray objectAtIndex:0];
     _photoListViewController.circleId = mm.circleId;
     
@@ -228,19 +235,19 @@
     _isGettingNextPage = NO;
 }
 
-
+//根据圈子添加动态列表--用于下拉刷新
 -(void)insertDynamicListByCircle:(NSArray *)mediaArray{
     NSInteger count = mediaArray.count;
     for (NSInteger i = count - 1 ; i >= 0 ; --i) {
         NSMutableDictionary *dict = [mediaArray objectAtIndex:i];
         if (dict) {
-            NSString *cIdInNewArray = [dict objectForKey:@"circleId"];
+            NSString *cIdInNewArray = [dict objectForKey:@"circleId"];//返回的圈子id
             
-            BOOL foundedFlag = NO;
+            BOOL foundedFlag = NO;//是否找到对应圈子标志
             for (NSMutableDictionary *oldDict in self.dynamicList) {
-                NSString *cIdInOldArray = [oldDict objectForKey:@"circleId"];
+                NSString *cIdInOldArray = [oldDict objectForKey:@"circleId"];//已有集合的圈子id
                 
-                if ([cIdInNewArray isEqualToString:cIdInOldArray]) {
+                if ([cIdInNewArray isEqualToString:cIdInOldArray]) {//找到相同circleId
                     [oldDict setObject:[dict objectForKey:@"userNames"] forKey:@"userNames"];
                     [oldDict setObject:[dict objectForKey:@"num"] forKey:@"num"];
                     [oldDict setObject:[dict objectForKey:@"date"] forKey:@"date"];
@@ -261,7 +268,7 @@
     }
 }
 
-
+//用于下拉刷新的delegate
 -(void)getDynamicListByTimeDidFinished:(NSArray *)mediaArray{
     if (mediaArray.count > 0) {
         [self insertDynamicListByCircle:mediaArray];
@@ -293,7 +300,7 @@
 
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
-
+//下拉刷新
 - (void)reloadTableViewDataSource{
 	
 	//  should be calling your tableviews data source model to reload
@@ -306,7 +313,7 @@
     NSTimeInterval time = 0;
     if ([self.dynamicList count]>0) {
         NSDictionary *dynamic = [self.dynamicList objectAtIndex:0];
-        NSArray *picArray = [dynamic objectForKey:@"picArray"];
+        NSArray *picArray = [dynamic objectForKey:@"picArray"];//照片数组
         MediaModel *mm = [picArray objectAtIndex:0];
         time = mm.ctime.timeIntervalSince1970 + 1;
     }

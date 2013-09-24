@@ -76,7 +76,7 @@
 }
 
 -(void)updateAvatar:(NSNotification *)notification{
-    self.mDiaryHeaderCellView.headIconView.imageURL = [NSURL URLWithString:[MySingleton sharedSingleton].avatarUrl];
+    self.mDiaryHeaderCellView.headIconView.imageURL = [NSURL URLWithString:[MySingleton sharedSingleton].avatarUrl];//设置头像
 }
 
 #pragma mark - View lifecycle
@@ -92,14 +92,14 @@
     NSArray *arr1 = [[NSBundle mainBundle] loadNibNamed:@"DiaryHeaderCellView" owner:self options:nil];  
     self.mDiaryHeaderCellView = [arr1 objectAtIndex:0];
     
-    self.mDiaryHeaderCellView.headIconView.imageURL = [NSURL URLWithString:[MySingleton sharedSingleton].avatarUrl];
+    self.mDiaryHeaderCellView.headIconView.imageURL = [NSURL URLWithString:[MySingleton sharedSingleton].avatarUrl];//设置头像
     CALayer *mask = [CALayer layer];
     mask.frame = self.mDiaryHeaderCellView.headIconView.frame;
     mask.contents = (id)[[UIImage imageNamed:@"my_avatar_mask.png"] CGImage];
     self.mDiaryHeaderCellView.headIconView.layer.mask = mask;
     self.mDiaryHeaderCellView.headIconView.layer.masksToBounds = YES;
     
-    
+    //修改账号信息
     UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goMyAccountView:)];
     [headerTap setNumberOfTapsRequired:1];
     self.mDiaryHeaderCellView.headIconView.userInteractionEnabled = YES;
@@ -115,6 +115,7 @@
     [self.mFriendListInterface getFriendList];
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -122,9 +123,9 @@
     
     _hasMorePage = YES;
     
-    self.diaryList = [[[NSMutableArray alloc] init] autorelease];
+    self.diaryList = [[[NSMutableArray alloc] init] autorelease];//回忆列表
     
-    UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 406) style:UITableViewStylePlain];
+    UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.bounds.size.height-54) style:UITableViewStylePlain];
     _table.delegate = self;
     _table.dataSource = self;
     _table.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -132,21 +133,31 @@
     _table.userInteractionEnabled = YES;
     _table.multipleTouchEnabled = YES;
     
-    [self initDiaryHeaderCellView];
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        _table.frame = CGRectMake(0, 20, 320, self.view.bounds.size.height-54-20);
+        [_table setContentInset:UIEdgeInsetsMake(-20, 0, 0, 0)];
+    }
+#endif
+    
+    [self initDiaryHeaderCellView];//初始化头像View
     _table.tableHeaderView = self.mDiaryHeaderCellView;
     
     self.mtableView = _table;
     [_table release];
     
-    
+    //获取历史列表
     self.mHistoryInterface = [[[HistoryInterface alloc] init] autorelease];
     self.mHistoryInterface.delegate = self;
     [self.mHistoryInterface getHistoryListByStartTime:0];
     _isGettingNextPage = YES;
     
-    
+    //下拉刷新
     if (_refreshHeaderView == nil) {
-		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.mtableView.bounds.size.height, self.view.frame.size.width, self.mtableView.bounds.size.height)];
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,
+                                                                                                      0.0f - self.mtableView.bounds.size.height,
+                                                                                                      self.view.frame.size.width,
+                                                                                                      self.mtableView.bounds.size.height)];
 		view.delegate = self;
 		[self.mtableView addSubview:view];
 		_refreshHeaderView = view;
@@ -188,11 +199,11 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
+//删除照片Notification事件
 -(void)removeMedia:(NSNotification *)notification{
     NSString *mediaId = [notification.userInfo objectForKey:@"mediaId"];
     if (mediaId) {
-        
+        // 需要删除的dict
         NSMutableArray *toDelete = [NSMutableArray array];
 
         for (NSDictionary *dict in self.diaryList) {
@@ -236,12 +247,12 @@
     
     cell.mediaArray = [[self.diaryList objectAtIndex:[indexPath section]] objectForKey:@"mediaArray"];
 
-    
+    //获取下一页
     if (_hasMorePage && !_isGettingNextPage && indexPath.section == [self.diaryList count] - 1) {
         _isGettingNextPage = YES;
         
         NSArray *mediaArray = [[self.diaryList lastObject] objectForKey:@"mediaArray"];
-        MediaModel *mm = [mediaArray objectAtIndex:mediaArray.count - 1];
+        MediaModel *mm = [mediaArray objectAtIndex:mediaArray.count - 1];//照片
         
         self.mHistoryInterface = [[[HistoryInterface alloc] init] autorelease];
         self.mHistoryInterface.delegate = self;
@@ -255,7 +266,7 @@
 #pragma mark - UITableViewDelegate method
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
+    //当前section的照片数量
     NSInteger count = [[[self.diaryList objectAtIndex:[indexPath section]] objectForKey:@"mediaArray"] count];
     
     CGFloat rowHeight = 80;
@@ -275,7 +286,7 @@
     return 35;
 }
 
-
+//返回table header
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSArray *arr1 = [[NSBundle mainBundle] loadNibNamed:@"DiarySectionView" owner:self options:nil];  
     DiarySectionView *mDiarySectionView = [arr1 objectAtIndex:0];
@@ -349,7 +360,7 @@
 }
 
 -(void)getHistoryListDidFailed:(NSString *)errorMsg{
-    
+    //TODO 获取回忆列表失败
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"获取回忆列表失败" 
 													   message:errorMsg 
 													  delegate:nil
@@ -364,19 +375,19 @@
     _isGettingNextPage = NO;
 }
 
-
+//根据圈子添加历史列表--用于下拉刷新
 -(void)insertDiaryListByDate:(NSArray *)mediaArray{
     NSInteger count = mediaArray.count;
     for (NSInteger i = count - 1 ; i >= 0 ; --i) {
         NSMutableDictionary *days = [mediaArray objectAtIndex:i];
         if (days) {
-            NSDate *date = [days objectForKey:@"date"];
+            NSDate *date = [days objectForKey:@"date"];//返回的时间
             
-            BOOL foundedFlag = NO;
+            BOOL foundedFlag = NO;//是否找到对应时间标志
             for (NSMutableDictionary *oldDay in self.diaryList) {
-                NSDate *dateInOldArray = [oldDay objectForKey:@"date"];
+                NSDate *dateInOldArray = [oldDay objectForKey:@"date"];//已有集合的时间
                 
-                if ([date isSameDay:dateInOldArray]) {
+                if ([date isSameDay:dateInOldArray]) {//找到相同时间
                     NSMutableArray *picArray = [oldDay objectForKey:@"mediaArray"];
                     [picArray insertObjects:[days objectForKey:@"mediaArray"]
                                   atIndexes:[NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[days objectForKey:@"mediaArray"] count])]];
@@ -393,7 +404,7 @@
     }
 }
 
-
+//用于下拉刷新的delegate
 -(void)getHistoryListByTimeDidFinished:(NSArray *)mediaArray{
     if (mediaArray.count > 0) {
         [self insertDiaryListByDate:mediaArray];
@@ -407,7 +418,7 @@
 }
 
 -(void)getHistoryListByTimeDidFailed:(NSString *)errorMsg{
-    
+    //TODO 获取回忆列表失败
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"获取回忆列表失败" 
 													   message:errorMsg 
 													  delegate:nil
@@ -457,8 +468,8 @@
             icon.imageURL = [NSURL URLWithString:user.avatarUrl];
             icon.userInteractionEnabled = YES;
             icon.tag = i;
-            
-            
+            //TODO 点击事件，自定义tag
+            //朋友头像点击事件
             UITapGestureRecognizer *headerTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goHomePage:)];
             [headerTap setNumberOfTapsRequired:1];
             [icon addGestureRecognizer:headerTap];
@@ -493,7 +504,7 @@
 
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
-
+//下拉刷新
 - (void)reloadTableViewDataSource{
 	
 	//  should be calling your tableviews data source model to reload
@@ -505,19 +516,19 @@
     NSTimeInterval time = 0;
     if ([self.diaryList count]>0) {
         NSArray *mediaArray = [[self.diaryList objectAtIndex:0] objectForKey:@"mediaArray"];
-        MediaModel *mm = [mediaArray objectAtIndex:0];
+        MediaModel *mm = [mediaArray objectAtIndex:0];//照片
         time = mm.ctime.timeIntervalSince1970 + 1;
     }
     
     [self.mHistoryInterfaceForPull getHistoryListByEndTime:time];
     
-    
+    //更新好友列表
     self.mFriendListInterface = [[[FriendListInterface alloc] init] autorelease];
     self.mFriendListInterface.delegate = self;
     [self.mFriendListInterface getFriendList];
 }
 
-
+//刷新完成后通知下拉刷新view
 - (void)doneLoadingTableViewData{
 	
 	//  model should call this when its done loading

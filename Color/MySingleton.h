@@ -27,13 +27,13 @@
 @property (nonatomic,assign) UIImagePickerControllerCameraFlashMode lastCameraFlashMode;
 
 @property (nonatomic,strong) NSString *sessionId;
-@property (nonatomic,readonly) NSString *baseInterfaceUrl;
+@property (nonatomic,readonly) NSString *baseInterfaceUrl;//接口地址根路径
 
-@property (nonatomic,retain) NSString *name;
-@property (nonatomic,retain) NSString *avatarUrl;
+@property (nonatomic,retain) NSString *name;//本机用户名
+@property (nonatomic,retain) NSString *avatarUrl;//本机用户头像
 @property (nonatomic,retain) NSString *userId;
-@property (nonatomic,retain) NSString *updateUrl;
+@property (nonatomic,retain) NSString *updateUrl;//软件更新url
 
--(BOOL)isStateDictExist;
+-(BOOL)isStateDictExist;//状态文件是否存在
 @end
 

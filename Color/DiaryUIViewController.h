@@ -1,6 +1,7 @@
 //
 //  DiaryUIViewController.h
 //  Color
+//  回忆主界面
 //  Created by chao han on 12-5-12.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
@@ -29,14 +30,14 @@
 
 @property (nonatomic,retain) UITableView *mtableView;
 
-@property (nonatomic,retain) DiaryHeaderCellView *mDiaryHeaderCellView;
+@property (nonatomic,retain) DiaryHeaderCellView *mDiaryHeaderCellView;//回忆页面 头像view
 
-@property (nonatomic,retain) HistoryInterface *mHistoryInterface;
-@property (nonatomic,retain) HistoryInterface *mHistoryInterfaceForPull;
+@property (nonatomic,retain) HistoryInterface *mHistoryInterface;//历史列表接口
+@property (nonatomic,retain) HistoryInterface *mHistoryInterfaceForPull;//历史列表接口--下拉刷新
 
-@property (nonatomic,retain) NSMutableArray *diaryList;
+@property (nonatomic,retain) NSMutableArray *diaryList;//回忆列表
 
-@property (nonatomic,retain) FriendListInterface *mFriendListInterface;
+@property (nonatomic,retain) FriendListInterface *mFriendListInterface;//好友接口
 @property (nonatomic,retain) NSMutableArray *friendList;
 
 @end

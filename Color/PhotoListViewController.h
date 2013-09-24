@@ -30,10 +30,10 @@
     BOOL _hasMorePage;
 }
 
-@property (nonatomic,retain) NSString *circleId;
-@property (nonatomic,retain) NSString *mediaId;
+@property (nonatomic,retain) NSString *circleId;//圈子id
+@property (nonatomic,retain) NSString *mediaId;//media id
 
-@property (nonatomic,retain) NSMutableArray *mediaList;
+@property (nonatomic,retain) NSMutableArray *mediaList;//照片列表
 
 @property (nonatomic,retain) UIScrollView *mscrollView;
 
@@ -42,5 +42,5 @@
 @property (nonatomic,retain) RemoveMediaInterface *mRemoveMediaInterface;
 
 @property (nonatomic,retain) MediaByCircleIdInterface *mMediaByCircleIdInterface;
-@property (nonatomic,retain) MediaByCircleIdInterface *mMediaByCircleIdInterfaceForPull;
+@property (nonatomic,retain) MediaByCircleIdInterface *mMediaByCircleIdInterfaceForPull;//动态接口--用于下拉刷新
 @end

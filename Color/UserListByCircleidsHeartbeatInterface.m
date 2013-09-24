@@ -1,6 +1,7 @@
 //
 //  UserListByCircleidsHeartbeatInterface.m
 //  Color
+//  根据circleId数组字符串获取对应圈子成员 心跳接口
 //  Created by chao han on 12-6-11.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
@@ -41,9 +42,25 @@
     [super dealloc];
 }
 
+//{
+//    "returncode": 0,
+//    "content": [
+//                {
+//                    "user": [
+//                             {
+//                                 "userId": "580000019",
+//                                 "name": "tang",
+//                                 "avatar": "avatar/580000019/580000019_1340088820.jpg"
+//                             }
+//                             ]
+//                }
+//                ]
+//}
+
+#pragma mark - BaseInterfaceDelegate
 -(void)parseResult:(NSDictionary *)responseDict{
     if (responseDict && [responseDict count] > 0) {
-        NSMutableArray *userArray = [[NSMutableArray alloc] init];
+        NSMutableArray *userArray = [[NSMutableArray alloc] init];//返回结果
         
         NSArray *contentArray = [responseDict objectForKey:@"content"];
         if (contentArray.count > 0) {
