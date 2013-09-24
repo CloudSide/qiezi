@@ -69,6 +69,5 @@
         <image name="group_photo_bg.png" width="320" height="320"/>
         <image name="logo.png" width="50" height="50"/>
         <image name="logoPressed.png" width="50" height="50"/>
-        <image name="logoPressed.png" width="50" height="50"/>
     </resources>
 </document>
