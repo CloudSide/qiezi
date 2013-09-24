@@ -114,41 +114,51 @@
 
 -(void)drawRect:(CGRect)iRect
 {
-    int i;
-    CGRect rect;
-    
-    iRect = self.bounds;
-    
-    if ( self.opaque ) {
-        [self.backgroundColor set];
-        UIRectFill( iRect );
-    }
-    
-    if ( self.hidesForSinglePage && self.numberOfPages == 1 ) return;
-    
-    UIImage *dotImage = [UIImage imageNamed:@"tinyStar.png"];
-    
-    rect.size.height = dotImage.size.height;
-    rect.size.width = self.numberOfPages * dotImage.size.width + ( self.numberOfPages - 1 ) * _kSpacing;
-    rect.origin.x = floorf( ( iRect.size.width - rect.size.width ) / 2.0 );
-    rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );
-    rect.size.width = dotImage.size.width;
-    
-    for ( i = 0; i < self.numberOfPages; ++i ) {
+#ifdef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+   
+        int i;
+        CGRect rect;
         
-        UIImage *dotImage = nil;
-        if (i == self.subviews.count - 1) {
-            dotImage = [UIImage imageNamed:@"tinyStar.png"];
-        }else if(self.currentPage == i){
-            dotImage = [UIImage imageNamed:@"whiteDot.png"];
-        }else{
-            dotImage = [UIImage imageNamed:@"blackDot.png"];
+        iRect = self.bounds;
+        
+        if ( self.opaque ) {
+            [self.backgroundColor set];
+            UIRectFill( iRect );
         }
         
-        [dotImage drawInRect: rect];
+        if ( self.hidesForSinglePage && self.numberOfPages == 1 ) return;
         
-        rect.origin.x += dotImage.size.width + _kSpacing;
+        UIImage *dotImage = [UIImage imageNamed:@"tinyStar.png"];
+        
+        rect.size.height = dotImage.size.height;
+        rect.size.width = self.numberOfPages * dotImage.size.width + ( self.numberOfPages - 1 ) * _kSpacing;
+        rect.origin.x = floorf( ( iRect.size.width - rect.size.width ) / 2.0 );
+        rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );
+        rect.size.width = dotImage.size.width;
+        
+        for ( i = 0; i < self.numberOfPages; ++i ) {
+            
+            UIImage *dotImage = nil;
+            if (i == self.subviews.count - 1) {
+                dotImage = [UIImage imageNamed:@"tinyStar.png"];
+            }else if(self.currentPage == i){
+                dotImage = [UIImage imageNamed:@"whiteDot.png"];
+            }else{
+                dotImage = [UIImage imageNamed:@"blackDot.png"];
+            }
+            
+            [dotImage drawInRect: rect];
+            
+            rect.origin.x += dotImage.size.width + _kSpacing;
+        }
+     
+    }else{
+        [super drawRect:iRect];
     }
+#else
+    [super drawRect:iRect];
+#endif
 }
 
 - (void)dealloc
