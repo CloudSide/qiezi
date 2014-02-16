@@ -284,6 +284,8 @@
 		03F53B2E15679A5300BD695F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F53B2C15679A5300BD695F /* LoginViewController.xib */; };
 		03F53B3315679F1000BD695F /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F53B3115679F1000BD695F /* RegisteViewController.m */; };
 		03F53B3415679F1000BD695F /* RegisteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F53B3215679F1000BD695F /* RegisteViewController.xib */; };
+		4EAD2D7818B100DE00D1A613 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EAD2D7518B100DE00D1A613 /* libWeiboSDK.a */; };
+		4EAD2D7918B100DE00D1A613 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4EAD2D7618B100DE00D1A613 /* WeiboSDK.bundle */; };
 		C1A35F8A17F0311F00C1219E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1A35F8917F0311F00C1219E /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -697,6 +699,9 @@
 		03F53B3115679F1000BD695F /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
 		03F53B3215679F1000BD695F /* RegisteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisteViewController.xib; sourceTree = "<group>"; };
 		4E4BF83F15D4AD7200FB1247 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
+		4EAD2D7518B100DE00D1A613 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
+		4EAD2D7618B100DE00D1A613 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
+		4EAD2D7718B100DE00D1A613 /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
 		C1A35F8917F0311F00C1219E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -715,6 +720,7 @@
 				03CD9F12155EADEF0004E0A4 /* libz.1.2.5.dylib in Frameworks */,
 				03CD9F10155EADDB0004E0A4 /* CFNetwork.framework in Frameworks */,
 				03CD9F0E155EADC80004E0A4 /* QuartzCore.framework in Frameworks */,
+				4EAD2D7818B100DE00D1A613 /* libWeiboSDK.a in Frameworks */,
 				03CD9E9B155EAB960004E0A4 /* UIKit.framework in Frameworks */,
 				03CD9E9D155EAB960004E0A4 /* Foundation.framework in Frameworks */,
 				03CD9E9F155EAB960004E0A4 /* CoreGraphics.framework in Frameworks */,
@@ -983,6 +989,7 @@
 		03CD9ECF155EABBD0004E0A4 /* Utillity */ = {
 			isa = PBXGroup;
 			children = (
+				4EAD2D7418B100DE00D1A613 /* libWeiboSDK */,
 				0378E593158B1C8500CFE169 /* FMDB */,
 				039AEE3C1579B683006023C0 /* RefreshTableHeaderView */,
 				03B5D984157661E900E89FC2 /* Reachability */,
@@ -1396,6 +1403,16 @@
 			name = DiaryView;
 			sourceTree = "<group>";
 		};
+		4EAD2D7418B100DE00D1A613 /* libWeiboSDK */ = {
+			isa = PBXGroup;
+			children = (
+				4EAD2D7518B100DE00D1A613 /* libWeiboSDK.a */,
+				4EAD2D7618B100DE00D1A613 /* WeiboSDK.bundle */,
+				4EAD2D7718B100DE00D1A613 /* WeiboSDK.h */,
+			);
+			path = libWeiboSDK;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1533,6 +1550,7 @@
 				03CD9FD6155EB6FB0004E0A4 /* HomeIconSelected.png in Resources */,
 				03CD9FD7155EB6FB0004E0A4 /* HomeIconSelected@2x.png in Resources */,
 				03CD9FD8155EB6FB0004E0A4 /* icon_arrow_left.png in Resources */,
+				4EAD2D7918B100DE00D1A613 /* WeiboSDK.bundle in Resources */,
 				03CD9FD9155EB6FB0004E0A4 /* icon_arrow_left@2x.png in Resources */,
 				03CD9FDA155EB6FB0004E0A4 /* icon_arrow_right.png in Resources */,
 				03CD9FDB155EB6FB0004E0A4 /* icon_arrow_right@2x.png in Resources */,
@@ -1872,6 +1890,10 @@
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "Color/QieZi-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Volumes/disk/evil/Documents/iOS-taoxiaoxian/qiezi/Color/libWeiboSDK",
+				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = QieZi;
 				PROVISIONING_PROFILE = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
@@ -1893,6 +1915,10 @@
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "Color/QieZi-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Volumes/disk/evil/Documents/iOS-taoxiaoxian/qiezi/Color/libWeiboSDK",
+				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = QieZi;
 				PROVISIONING_PROFILE = "7934B050-DA51-4B60-8E3A-89C22120EDB7";

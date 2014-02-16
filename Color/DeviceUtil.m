@@ -84,7 +84,7 @@
 //    NSString *macAddressString = [UIDevice currentDevice].identifierForVendor.UUIDString;
     
     return macAddressString;  
-//    return @"60:FA:CD:18:B5:63";
-}  
+    return @"1yuyuyuyuuyuyhjgjgjg";
+}
 
 @end
