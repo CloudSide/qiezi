@@ -5,58 +5,37 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FindAccountViewController">
             <connections>
-                <outlet property="dateLabel" destination="11" id="17"/>
-                <outlet property="findAccountImg" destination="6" id="hyI-lv-G55"/>
-                <outlet property="monthYearLabel" destination="12" id="18"/>
-                <outlet property="view" destination="1" id="3"/>
-                <outlet property="weekLable" destination="13" id="19"/>
+                <outlet property="nameLabel" destination="h8X-0e-BTS" id="o7Y-uU-fCy"/>
+                <outlet property="view" destination="Tgd-tY-JeN" id="4Dj-N6-XZ2"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="1">
+        <view contentMode="scaleToFill" id="Tgd-tY-JeN">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="logo.png" id="6">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="logo.png" id="ew2-Sd-vl9">
                     <rect key="frame" x="135" y="410" width="50" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="group_photo_bg.png" id="8">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="group_photo_bg.png" id="Scl-Hq-tDY">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="开始使用茄子相机" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" id="9">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="找回我的账号" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" id="9fr-ld-MbZ">
                     <rect key="frame" x="57" y="160" width="206" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="20" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" id="11">
-                    <rect key="frame" x="109" y="283" width="38" height="35"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="3月.2012" lineBreakMode="tailTruncation" minimumFontSize="10" id="12">
-                    <rect key="frame" x="148" y="286" width="63" height="15"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="周四" lineBreakMode="tailTruncation" minimumFontSize="10" id="13">
-                    <rect key="frame" x="148" y="301" width="42" height="15"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="15">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="23b-H9-rGq">
                     <rect key="frame" x="228" y="416" width="72" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <state key="normal" title="注册">
+                    <state key="normal" title="查询">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -67,9 +46,18 @@
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="startAction:" destination="-1" eventType="touchUpInside" id="16"/>
+                        <action selector="findAccountAction:" destination="-1" eventType="touchUpInside" id="sxP-yt-eh3"/>
                     </connections>
                 </button>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="账号名称" minimumFontSize="17" id="h8X-0e-BTS">
+                    <rect key="frame" x="98" y="198" width="124" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Cid-KT-GY5"/>
+                    </connections>
+                </textField>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

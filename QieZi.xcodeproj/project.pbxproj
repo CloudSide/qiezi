@@ -284,9 +284,14 @@
 		03F53B2E15679A5300BD695F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F53B2C15679A5300BD695F /* LoginViewController.xib */; };
 		03F53B3315679F1000BD695F /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F53B3115679F1000BD695F /* RegisteViewController.m */; };
 		03F53B3415679F1000BD695F /* RegisteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F53B3215679F1000BD695F /* RegisteViewController.xib */; };
-		4EAD2D7818B100DE00D1A613 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EAD2D7518B100DE00D1A613 /* libWeiboSDK.a */; };
-		4EAD2D7918B100DE00D1A613 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4EAD2D7618B100DE00D1A613 /* WeiboSDK.bundle */; };
+		C16FC8A318B20E24008759F4 /* FindAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C16FC8A118B20E24008759F4 /* FindAccountViewController.m */; };
+		C16FC8A418B20E24008759F4 /* FindAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C16FC8A218B20E24008759F4 /* FindAccountViewController.xib */; };
+		C16FC8A818B20F3D008759F4 /* FindAccountResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C16FC8A618B20F3D008759F4 /* FindAccountResultViewController.m */; };
+		C16FC8A918B20F3D008759F4 /* FindAccountResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C16FC8A718B20F3D008759F4 /* FindAccountResultViewController.xib */; };
 		C1A35F8A17F0311F00C1219E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1A35F8917F0311F00C1219E /* Default-568h@2x.png */; };
+		C1F8B23A18B1A81A00201A75 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F8B23718B1A81A00201A75 /* libWeiboSDK.a */; };
+		C1F8B23B18B1A81A00201A75 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C1F8B23818B1A81A00201A75 /* WeiboSDK.bundle */; };
+		C1F8B24018B1AB5900201A75 /* KeyChainTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C1F8B23F18B1AB5900201A75 /* KeyChainTool.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -699,10 +704,18 @@
 		03F53B3115679F1000BD695F /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
 		03F53B3215679F1000BD695F /* RegisteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisteViewController.xib; sourceTree = "<group>"; };
 		4E4BF83F15D4AD7200FB1247 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
-		4EAD2D7518B100DE00D1A613 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
-		4EAD2D7618B100DE00D1A613 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
-		4EAD2D7718B100DE00D1A613 /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
+		C16FC8A018B20E24008759F4 /* FindAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindAccountViewController.h; sourceTree = "<group>"; };
+		C16FC8A118B20E24008759F4 /* FindAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindAccountViewController.m; sourceTree = "<group>"; };
+		C16FC8A218B20E24008759F4 /* FindAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindAccountViewController.xib; sourceTree = "<group>"; };
+		C16FC8A518B20F3D008759F4 /* FindAccountResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindAccountResultViewController.h; sourceTree = "<group>"; };
+		C16FC8A618B20F3D008759F4 /* FindAccountResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindAccountResultViewController.m; sourceTree = "<group>"; };
+		C16FC8A718B20F3D008759F4 /* FindAccountResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindAccountResultViewController.xib; sourceTree = "<group>"; };
 		C1A35F8917F0311F00C1219E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		C1F8B23718B1A81A00201A75 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
+		C1F8B23818B1A81A00201A75 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
+		C1F8B23918B1A81A00201A75 /* WeiboSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeiboSDK.h; sourceTree = "<group>"; };
+		C1F8B23E18B1AB5900201A75 /* KeyChainTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyChainTool.h; sourceTree = "<group>"; };
+		C1F8B23F18B1AB5900201A75 /* KeyChainTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyChainTool.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -710,17 +723,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03CD9F14155EB05E0004E0A4 /* Security.framework in Frameworks */,
 				0378E5A5158B1CBE00CFE169 /* libsqlite3.0.dylib in Frameworks */,
 				03B5D9891576628200E89FC2 /* libxml2.dylib in Frameworks */,
 				03468BD4156BF517000DE873 /* MediaPlayer.framework in Frameworks */,
 				035BDBE6156A7D4D00CEEC95 /* CoreLocation.framework in Frameworks */,
 				03CD9F18155EB0D70004E0A4 /* MobileCoreServices.framework in Frameworks */,
 				03CD9F16155EB0770004E0A4 /* SystemConfiguration.framework in Frameworks */,
-				03CD9F14155EB05E0004E0A4 /* Security.framework in Frameworks */,
 				03CD9F12155EADEF0004E0A4 /* libz.1.2.5.dylib in Frameworks */,
 				03CD9F10155EADDB0004E0A4 /* CFNetwork.framework in Frameworks */,
 				03CD9F0E155EADC80004E0A4 /* QuartzCore.framework in Frameworks */,
-				4EAD2D7818B100DE00D1A613 /* libWeiboSDK.a in Frameworks */,
+				C1F8B23A18B1A81A00201A75 /* libWeiboSDK.a in Frameworks */,
 				03CD9E9B155EAB960004E0A4 /* UIKit.framework in Frameworks */,
 				03CD9E9D155EAB960004E0A4 /* Foundation.framework in Frameworks */,
 				03CD9E9F155EAB960004E0A4 /* CoreGraphics.framework in Frameworks */,
@@ -989,7 +1002,8 @@
 		03CD9ECF155EABBD0004E0A4 /* Utillity */ = {
 			isa = PBXGroup;
 			children = (
-				4EAD2D7418B100DE00D1A613 /* libWeiboSDK */,
+				C1F8B23D18B1AB5900201A75 /* KeyChainTool */,
+				C1F8B23618B1A81A00201A75 /* libWeiboSDK */,
 				0378E593158B1C8500CFE169 /* FMDB */,
 				039AEE3C1579B683006023C0 /* RefreshTableHeaderView */,
 				03B5D984157661E900E89FC2 /* Reachability */,
@@ -1056,6 +1070,12 @@
 				035EDC241590DB09007B090A /* MediaCommentListViewControll.h */,
 				035EDC251590DB09007B090A /* MediaCommentListViewControll.m */,
 				035EDC261590DB09007B090A /* MediaCommentListViewControll.xib */,
+				C16FC8A018B20E24008759F4 /* FindAccountViewController.h */,
+				C16FC8A118B20E24008759F4 /* FindAccountViewController.m */,
+				C16FC8A218B20E24008759F4 /* FindAccountViewController.xib */,
+				C16FC8A518B20F3D008759F4 /* FindAccountResultViewController.h */,
+				C16FC8A618B20F3D008759F4 /* FindAccountResultViewController.m */,
+				C16FC8A718B20F3D008759F4 /* FindAccountResultViewController.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1403,14 +1423,24 @@
 			name = DiaryView;
 			sourceTree = "<group>";
 		};
-		4EAD2D7418B100DE00D1A613 /* libWeiboSDK */ = {
+		C1F8B23618B1A81A00201A75 /* libWeiboSDK */ = {
 			isa = PBXGroup;
 			children = (
-				4EAD2D7518B100DE00D1A613 /* libWeiboSDK.a */,
-				4EAD2D7618B100DE00D1A613 /* WeiboSDK.bundle */,
-				4EAD2D7718B100DE00D1A613 /* WeiboSDK.h */,
+				C1F8B23718B1A81A00201A75 /* libWeiboSDK.a */,
+				C1F8B23818B1A81A00201A75 /* WeiboSDK.bundle */,
+				C1F8B23918B1A81A00201A75 /* WeiboSDK.h */,
 			);
 			path = libWeiboSDK;
+			sourceTree = "<group>";
+		};
+		C1F8B23D18B1AB5900201A75 /* KeyChainTool */ = {
+			isa = PBXGroup;
+			children = (
+				C1F8B23E18B1AB5900201A75 /* KeyChainTool.h */,
+				C1F8B23F18B1AB5900201A75 /* KeyChainTool.m */,
+			);
+			name = KeyChainTool;
+			path = Utility/KeyChainTool;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1524,6 +1554,7 @@
 				03CD9FBA155EB6FB0004E0A4 /* comment_selected@2x.png in Resources */,
 				03CD9FBB155EB6FB0004E0A4 /* comment.png in Resources */,
 				03CD9FBC155EB6FB0004E0A4 /* comment@2x.png in Resources */,
+				C16FC8A918B20F3D008759F4 /* FindAccountResultViewController.xib in Resources */,
 				03CD9FBD155EB6FB0004E0A4 /* commentIcon.png in Resources */,
 				03CD9FBE155EB6FB0004E0A4 /* commentIcon@2x.png in Resources */,
 				03CD9FBF155EB6FB0004E0A4 /* commentIconSelected.png in Resources */,
@@ -1550,7 +1581,7 @@
 				03CD9FD6155EB6FB0004E0A4 /* HomeIconSelected.png in Resources */,
 				03CD9FD7155EB6FB0004E0A4 /* HomeIconSelected@2x.png in Resources */,
 				03CD9FD8155EB6FB0004E0A4 /* icon_arrow_left.png in Resources */,
-				4EAD2D7918B100DE00D1A613 /* WeiboSDK.bundle in Resources */,
+				C1F8B23B18B1A81A00201A75 /* WeiboSDK.bundle in Resources */,
 				03CD9FD9155EB6FB0004E0A4 /* icon_arrow_left@2x.png in Resources */,
 				03CD9FDA155EB6FB0004E0A4 /* icon_arrow_right.png in Resources */,
 				03CD9FDB155EB6FB0004E0A4 /* icon_arrow_right@2x.png in Resources */,
@@ -1629,6 +1660,7 @@
 				0377375A1584281E00C37F02 /* logoJoinGroup@2x.png in Resources */,
 				0377375B1584281E00C37F02 /* logoJoinGroupPressed@2x.png in Resources */,
 				0377375C1584281E00C37F02 /* logoPressed.png in Resources */,
+				C16FC8A418B20E24008759F4 /* FindAccountViewController.xib in Resources */,
 				0377375D1584281E00C37F02 /* logoPressed@2x.png in Resources */,
 				035EDC1F1590C78C007B090A /* MyAccountViewController.xib in Resources */,
 				035EDC281590DB0A007B090A /* MediaCommentListViewControll.xib in Resources */,
@@ -1699,6 +1731,7 @@
 				035BDBE0156A724500CEEC95 /* MySingleton.m in Sources */,
 				035BDBED156AFD4B00CEEC95 /* NSData+Additions.m in Sources */,
 				03A23810156B032900EF0F12 /* RegisteInterface.m in Sources */,
+				C1F8B24018B1AB5900201A75 /* KeyChainTool.m in Sources */,
 				03468BD8156C59DF000DE873 /* UIImage+UIImageScale.m in Sources */,
 				035C0B76156D36AA00330A3F /* BaseInterface.m in Sources */,
 				035C0B7A156D3E8200330A3F /* UploadImageInterface.m in Sources */,
@@ -1707,12 +1740,14 @@
 				033E9DD215708FA0009F2E5E /* MediaModel.m in Sources */,
 				033E9DD51570A296009F2E5E /* UserModel.m in Sources */,
 				033E9DDD1570BEC4009F2E5E /* EGOImageLoader.m in Sources */,
+				C16FC8A818B20F3D008759F4 /* FindAccountResultViewController.m in Sources */,
 				033E9DDE1570BEC4009F2E5E /* EGOImageLoadConnection.m in Sources */,
 				033E9DE11570BECC009F2E5E /* EGOCache.m in Sources */,
 				033E9DE51570BEEA009F2E5E /* EGOImageView.m in Sources */,
 				03B5D94F1576616000E89FC2 /* ASIAuthenticationDialog.m in Sources */,
 				03B5D9501576616000E89FC2 /* ASIInputStream.m in Sources */,
 				03B5D9511576616000E89FC2 /* ASIFormDataRequest.m in Sources */,
+				C16FC8A318B20E24008759F4 /* FindAccountViewController.m in Sources */,
 				03B5D9521576616000E89FC2 /* ASIHTTPRequest.m in Sources */,
 				03B5D9531576616000E89FC2 /* ASINetworkQueue.m in Sources */,
 				03B5D9541576616000E89FC2 /* ASIDownloadCache.m in Sources */,
@@ -1893,6 +1928,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Volumes/disk/evil/Documents/iOS-taoxiaoxian/qiezi/Color/libWeiboSDK",
+					/Users/hanchao/Documents/iosWorkspace/qiezi/Color/libWeiboSDK,
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = QieZi;
@@ -1918,6 +1954,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Volumes/disk/evil/Documents/iOS-taoxiaoxian/qiezi/Color/libWeiboSDK",
+					/Users/hanchao/Documents/iosWorkspace/qiezi/Color/libWeiboSDK,
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = QieZi;

@@ -12,7 +12,7 @@
 #import "DefaultLoginInterface.h"
 #import "SendLogInterface.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,DefaultLoginInterfaceDelegate,SendLogInterfaceDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,DefaultLoginInterfaceDelegate,SendLogInterfaceDelegate,WeiboSDKDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -25,6 +25,8 @@
 @property (nonatomic,retain) DefaultLoginInterface *mDefaultLoginInterface;
 
 @property (nonatomic,retain) SendLogInterface *mSendLogInterface;
+
+@property (strong, nonatomic) NSString *wbtoken;//微博accessToken
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

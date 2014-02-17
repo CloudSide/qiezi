@@ -34,6 +34,9 @@
 @property (nonatomic,retain) NSString *userId;
 @property (nonatomic,retain) NSString *updateUrl;//软件更新url
 
+@property (nonatomic,retain) NSString *wbUserId;//微博userId
+
+
 -(BOOL)isStateDictExist;//状态文件是否存在
 @end
 

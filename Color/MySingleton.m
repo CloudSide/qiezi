@@ -8,6 +8,10 @@
 
 #import "MySingleton.h"
 
+#import "KeyChainTool.h"
+
+#define kWBUSERID   @"kWBUSERID"
+
 @implementation MySingleton
 
 @synthesize sessionId;
@@ -121,6 +125,7 @@
     self.avatarUrl = nil;
     self.userId = nil;
     self.updateUrl = nil;
+    self.wbUserId = nil;
     
     [super dealloc];
 }
@@ -234,6 +239,22 @@
 {
     NSMutableDictionary *stateDict = [self getStateDict];
     return [stateDict objectForKey:@"userId"];
+}
+
+-(NSString *)wbUserId
+{
+    return [KeyChainTool getValueByKey:kWBUSERID];
+}
+
+-(void)setWbUserId:(NSString *)wbUserId
+{
+    if (wbUserId.length==0) {
+        
+        [KeyChainTool removeValueByKey:kWBUSERID];
+    }else{
+    
+        [KeyChainTool setValue:wbUserId forKey:kWBUSERID];
+    }
 }
 
 @end

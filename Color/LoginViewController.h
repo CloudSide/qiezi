@@ -13,7 +13,7 @@
 @property (nonatomic,retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic,retain) IBOutlet UILabel *monthYearLabel;
 @property (nonatomic,retain) IBOutlet UILabel *weekLable;
-
+@property (nonatomic,retain) IBOutlet UIImageView *findAccountImg;
 
 -(IBAction)startAction:(id)sender;
 @end

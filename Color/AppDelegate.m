@@ -35,6 +35,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [MySingleton sharedSingleton].wbUserId = @"";
+    
+    [WeiboSDK enableDebugMode:YES];
+    [WeiboSDK registerApp:kAppKey];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
@@ -52,22 +57,45 @@
     }
     [manager release];  
     
-    //有网络，登陆操作
-    if ([self GetCurrntNet]) {
-        self.mDefaultLoginInterface = [[[DefaultLoginInterface alloc] init] autorelease];
-        self.mDefaultLoginInterface.delegate = self;
-        [self.mDefaultLoginInterface doLogin];
-        
-        //显示
-        [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
-        [self.window makeKeyAndVisible];
-    }else{
-        if ([[MySingleton sharedSingleton] isStateDictExist]) {
-            [self showMainView];
+    
+    
+    /*
+     *  如果存在wbUserId，说明非第一次登录，直接调用登录接口，
+     *  否则，走注册、找回账号流程
+     */
+    if ([MySingleton sharedSingleton].wbUserId.length>0) {
+        //有网络，登陆操作
+        if ([self GetCurrntNet]) {
+            self.mDefaultLoginInterface = [[[DefaultLoginInterface alloc] init] autorelease];
+            self.mDefaultLoginInterface.delegate = self;
+            [self.mDefaultLoginInterface doLogin];
+            
+            //显示
+            [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
+            [self.window makeKeyAndVisible];
         }else{
-            [self showRegisteView];
+            [self showMainView];
         }
+    }else{
+        [self showRegisteView];
     }
+    
+//    //有网络，登陆操作
+//    if ([self GetCurrntNet]) {
+//        self.mDefaultLoginInterface = [[[DefaultLoginInterface alloc] init] autorelease];
+//        self.mDefaultLoginInterface.delegate = self;
+//        [self.mDefaultLoginInterface doLogin];
+//        
+//        //显示
+//        [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
+//        [self.window makeKeyAndVisible];
+//    }else{
+//        if ([[MySingleton sharedSingleton] isStateDictExist]) {
+//            [self showMainView];
+//        }else{
+//            [self showRegisteView];
+//        }
+//    }
     
     NSLog(@"===============================================application didFinishLaunchingWithOptions========"); 
     if (!self.mSendLogInterface) {
@@ -451,6 +479,71 @@
 {
     NSLog(@"================sendLogDidFailed======================");
     //do nothing
+}
+
+#pragma mark - WeiBoSDKDelegate
+- (void)didReceiveWeiboResponse:(WBBaseResponse *)response
+{
+//    if ([response isKindOfClass:WBSendMessageToWeiboResponse.class])
+//    {
+//        NSString *title = @"发送结果";
+//        NSString *message = [NSString stringWithFormat:@"响应状态: %d\n响应UserInfo数据: %@\n原请求UserInfo数据: %@",(int)response.statusCode, response.userInfo, response.requestUserInfo];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+//                                                        message:message
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"确定"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//        [alert release];
+//    }
+//    else
+    if ([response isKindOfClass:WBAuthorizeResponse.class])
+    {
+//        NSString *title = @"认证结果";
+//        NSString *message = [NSString stringWithFormat:@"响应状态: %d\nresponse.userId: %@\nresponse.accessToken: %@\n响应UserInfo数据: %@\n原请求UserInfo数据: %@",(int)response.statusCode,[(WBAuthorizeResponse *)response userID], [(WBAuthorizeResponse *)response accessToken], response.userInfo, response.requestUserInfo];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+//                                                        message:message
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"确定"
+//                                              otherButtonTitles:nil];
+//        
+//        self.wbtoken = [(WBAuthorizeResponse *)response accessToken];
+//        
+//        [alert show];
+//        [alert release];
+        
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        
+        if ((int)response.statusCode == 0) {//授权成功
+//            [MySingleton sharedSingleton].wbUserId = [(WBAuthorizeResponse *)response userID];
+            
+            //发送授权成功通知
+            [userInfo setObject:@"succeed" forKey:@"result"];
+            [userInfo setObject:[(WBAuthorizeResponse *)response userID] forKey:@"wbUserId"];
+            
+        }else{//授权失败
+            //TODO:
+            //发送授权失败通知
+            [userInfo setObject:@"failed" forKey:@"result"];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"WBAuthorizeResponse" object:userInfo];
+        
+    }
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [WeiboSDK handleOpenURL:url delegate:self];
+}
+
+- (void)didReceiveWeiboRequest:(WBBaseRequest *)request
+{
+//    if ([request isKindOfClass:WBProvideMessageForWeiboRequest.class])
+//    {
+//        ProvideMessageForWeiboViewController *controller = [[[ProvideMessageForWeiboViewController alloc] init] autorelease];
+//        [self.viewController presentModalViewController:controller animated:YES];
+//    }
 }
 
 @end

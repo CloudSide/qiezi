@@ -14,3 +14,9 @@
     #import <CoreData/CoreData.h>
     #import "MySingleton.h"
 #endif
+
+#import "WeiboSDK.h"
+
+//com.sina.weibo.SNWeiboSDKDemo
+#define kAppKey         @"3984265888"
+#define kRedirectURI    @"http://www.sina.com"

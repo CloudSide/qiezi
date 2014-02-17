@@ -7,7 +7,8 @@
 //
 
 #import "LoginViewController.h"
-#import "RegisteViewController.h"
+#import "RegisteViewController.h" 
+#import "FindAccountViewController.h"
 
 @implementation LoginViewController
 
@@ -85,7 +86,14 @@
     self.dateLabel.text = [NSString stringWithFormat:@"%d",[comps day]];
     self.monthYearLabel.text = [NSString stringWithFormat:@"%d月.'%02d",[comps month],[comps year]];
     self.weekLable.text = weekDay;
+    
+    [self.findAccountImg setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(findAccountAction:)] autorelease];
+    [self.findAccountImg addGestureRecognizer:tap];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wbAuthorizeResult:) name:@"WBAuthorizeResponse" object:nil];
 }
+
 
 - (void)viewDidUnload
 {
@@ -105,6 +113,39 @@
     RegisteViewController *mRegisteViewController = [[RegisteViewController alloc] initWithNibName:@"RegisteViewController" bundle:nil];
     [self.navigationController pushViewController:mRegisteViewController animated:YES];
     [mRegisteViewController release];
+}
+
+-(void)findAccountAction:(id)sender
+{
+    //微博登录
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+    request.redirectURI = kRedirectURI;
+    request.scope = @"all";
+    request.userInfo = @{@"SSO_From": @"LoginViewController",
+//                         @"Other_Info_1": [NSNumber numberWithInt:123],
+//                         @"Other_Info_2": @[@"obj1", @"obj2"],
+//                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}
+                         };
+    [WeiboSDK sendRequest:request];
+}
+
+
+#pragma mark - NSNotification selector
+-(void)wbAuthorizeResult:(NSNotification*) aNotification
+{
+    NSDictionary *userInfo = [aNotification object];
+    
+    NSString *result = [userInfo objectForKey:@"result"];
+    if ([result isEqualToString:@"succeed"]) {
+        //TODO:授权成功
+        NSString *wbUserId = [userInfo objectForKey:@"wbUserId"];
+        NSLog(@"==========授权成功=======%@",wbUserId);
+        
+        FindAccountViewController *mFindAccountViewController = [[FindAccountViewController alloc] initWithNibName:@"FindAccountViewController" bundle:nil];
+        mFindAccountViewController.wbUserId = wbUserId;
+        [self.navigationController pushViewController:mFindAccountViewController animated:YES];
+        [mFindAccountViewController release];
+    }
 }
 
 @end
