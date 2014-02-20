@@ -15,6 +15,7 @@
     self.userId = nil;
     self.name = nil;
     self.avatarUrl = nil;
+    self.lastPicFlow = nil;
     
     [super dealloc];
 }

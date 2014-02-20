@@ -16,5 +16,6 @@
 @property (nonatomic,retain) NSString *name;
 @property (nonatomic,retain) NSString *avatarUrl;
 
+@property (nonatomic,retain) NSArray *lastPicFlow;//最近的照片流（目前只有找回账号页面使用） added on 14-02-19
 
 @end

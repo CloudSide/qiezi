@@ -288,6 +288,7 @@
 		C16FC8A418B20E24008759F4 /* FindAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C16FC8A218B20E24008759F4 /* FindAccountViewController.xib */; };
 		C16FC8A818B20F3D008759F4 /* FindAccountResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C16FC8A618B20F3D008759F4 /* FindAccountResultViewController.m */; };
 		C16FC8A918B20F3D008759F4 /* FindAccountResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C16FC8A718B20F3D008759F4 /* FindAccountResultViewController.xib */; };
+		C16FC8AC18B4526E008759F4 /* FindAccountInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = C16FC8AB18B4526E008759F4 /* FindAccountInterface.m */; };
 		C1A35F8A17F0311F00C1219E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1A35F8917F0311F00C1219E /* Default-568h@2x.png */; };
 		C1F8B23A18B1A81A00201A75 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F8B23718B1A81A00201A75 /* libWeiboSDK.a */; };
 		C1F8B23B18B1A81A00201A75 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C1F8B23818B1A81A00201A75 /* WeiboSDK.bundle */; };
@@ -710,6 +711,8 @@
 		C16FC8A518B20F3D008759F4 /* FindAccountResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindAccountResultViewController.h; sourceTree = "<group>"; };
 		C16FC8A618B20F3D008759F4 /* FindAccountResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindAccountResultViewController.m; sourceTree = "<group>"; };
 		C16FC8A718B20F3D008759F4 /* FindAccountResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindAccountResultViewController.xib; sourceTree = "<group>"; };
+		C16FC8AA18B4526E008759F4 /* FindAccountInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindAccountInterface.h; sourceTree = "<group>"; };
+		C16FC8AB18B4526E008759F4 /* FindAccountInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindAccountInterface.m; sourceTree = "<group>"; };
 		C1A35F8917F0311F00C1219E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C1F8B23718B1A81A00201A75 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
 		C1F8B23818B1A81A00201A75 /* WeiboSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WeiboSDK.bundle; sourceTree = "<group>"; };
@@ -1152,6 +1155,8 @@
 				035C0B7C156DA55300330A3F /* UploadVideoInterface.m */,
 				033E9DCC1570869E009F2E5E /* HistoryInterface.h */,
 				033E9DCD1570869E009F2E5E /* HistoryInterface.m */,
+				C16FC8AA18B4526E008759F4 /* FindAccountInterface.h */,
+				C16FC8AB18B4526E008759F4 /* FindAccountInterface.m */,
 				03B5D98A157663C700E89FC2 /* FriendListInterface.h */,
 				03B5D98B157663C700E89FC2 /* FriendListInterface.m */,
 				03B5D990157669B800E89FC2 /* DynamicInterface.h */,
@@ -1743,6 +1748,7 @@
 				C16FC8A818B20F3D008759F4 /* FindAccountResultViewController.m in Sources */,
 				033E9DDE1570BEC4009F2E5E /* EGOImageLoadConnection.m in Sources */,
 				033E9DE11570BECC009F2E5E /* EGOCache.m in Sources */,
+				C16FC8AC18B4526E008759F4 /* FindAccountInterface.m in Sources */,
 				033E9DE51570BEEA009F2E5E /* EGOImageView.m in Sources */,
 				03B5D94F1576616000E89FC2 /* ASIAuthenticationDialog.m in Sources */,
 				03B5D9501576616000E89FC2 /* ASIInputStream.m in Sources */,
@@ -1918,13 +1924,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Jiuzhou Zhitong Technology Co.,Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Jiuzhou Zhitong Technology Co.,Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Bruce Chen (KKYLDFR684)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Bruce Chen (KKYLDFR684)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Color/QieZi-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "Color/QieZi-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Volumes/disk/evil/Documents/iOS-taoxiaoxian/qiezi/Color/libWeiboSDK",
@@ -1932,8 +1938,8 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = QieZi;
-				PROVISIONING_PROFILE = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
+				PROVISIONING_PROFILE = "4F4ABA82-70B8-44EC-9AC2-10103612BFFD";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F4ABA82-70B8-44EC-9AC2-10103612BFFD";
 				SDKROOT = iphoneos5.1;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1944,13 +1950,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Beijing Jiuzhou Zhitong Technology Co.,Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Jiuzhou Zhitong Technology Co.,Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Bruce Chen (KKYLDFR684)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Bruce Chen (KKYLDFR684)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Color/QieZi-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "Color/QieZi-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Volumes/disk/evil/Documents/iOS-taoxiaoxian/qiezi/Color/libWeiboSDK",
@@ -1958,8 +1964,8 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = QieZi;
-				PROVISIONING_PROFILE = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7934B050-DA51-4B60-8E3A-89C22120EDB7";
+				PROVISIONING_PROFILE = "4F4ABA82-70B8-44EC-9AC2-10103612BFFD";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4F4ABA82-70B8-44EC-9AC2-10103612BFFD";
 				SDKROOT = iphoneos5.1;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "RegisteViewController.h" 
 #import "FindAccountViewController.h"
+#import "AppDelegate.h"
 
 @implementation LoginViewController
 
@@ -110,9 +111,22 @@
 
 #pragma mark - button action
 -(IBAction)startAction:(id)sender {
-    RegisteViewController *mRegisteViewController = [[RegisteViewController alloc] initWithNibName:@"RegisteViewController" bundle:nil];
-    [self.navigationController pushViewController:mRegisteViewController animated:YES];
-    [mRegisteViewController release];
+    //微博登录
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+    request.redirectURI = kRedirectURI;
+    request.scope = @"all";
+    request.userInfo = @{@"SSO_From": @"LoginViewController",
+                         @"action": @"regist",
+                         //                         @"Other_Info_1": [NSNumber numberWithInt:123],
+                         //                         @"Other_Info_2": @[@"obj1", @"obj2"],
+                         //                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}
+                         };
+    [WeiboSDK sendRequest:request];
+    
+//    
+//    RegisteViewController *mRegisteViewController = [[RegisteViewController alloc] initWithNibName:@"RegisteViewController" bundle:nil];
+//    [self.navigationController pushViewController:mRegisteViewController animated:YES];
+//    [mRegisteViewController release];
 }
 
 -(void)findAccountAction:(id)sender
@@ -122,7 +136,7 @@
     request.redirectURI = kRedirectURI;
     request.scope = @"all";
     request.userInfo = @{@"SSO_From": @"LoginViewController",
-//                         @"Other_Info_1": [NSNumber numberWithInt:123],
+                         @"action": @"login",
 //                         @"Other_Info_2": @[@"obj1", @"obj2"],
 //                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}
                          };
@@ -141,10 +155,25 @@
         NSString *wbUserId = [userInfo objectForKey:@"wbUserId"];
         NSLog(@"==========授权成功=======%@",wbUserId);
         
-        FindAccountViewController *mFindAccountViewController = [[FindAccountViewController alloc] initWithNibName:@"FindAccountViewController" bundle:nil];
-        mFindAccountViewController.wbUserId = wbUserId;
-        [self.navigationController pushViewController:mFindAccountViewController animated:YES];
-        [mFindAccountViewController release];
+        NSDictionary *wbUserInfo = [userInfo objectForKey:@"wbUserInfo"];
+        NSString *action = [wbUserInfo objectForKey:@"action"];
+        
+        if ([action isEqualToString:@"regist"]) {
+            RegisteViewController *mRegisteViewController = [[RegisteViewController alloc] initWithNibName:@"RegisteViewController" bundle:nil];
+            [self.navigationController pushViewController:mRegisteViewController animated:YES];
+            [mRegisteViewController release];
+        }else {//login
+            //获取微博userId，直接进入主界面
+            AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+            [mainDelegate showMainView];//显示主界面
+        }
+        
+        
+        
+//        FindAccountViewController *mFindAccountViewController = [[FindAccountViewController alloc] initWithNibName:@"FindAccountViewController" bundle:nil];
+//        mFindAccountViewController.wbUserId = wbUserId;
+//        [self.navigationController pushViewController:mFindAccountViewController animated:YES];
+//        [mFindAccountViewController release];
     }
 }
 

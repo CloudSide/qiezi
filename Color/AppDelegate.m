@@ -35,7 +35,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [MySingleton sharedSingleton].wbUserId = @"";
+//    [MySingleton sharedSingleton].wbUserId = @"";
     
     [WeiboSDK enableDebugMode:YES];
     [WeiboSDK registerApp:kAppKey];
@@ -71,10 +71,13 @@
             [self.mDefaultLoginInterface doLogin];
             
             //显示
-            [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleBlackTranslucent];
-            [self.window makeKeyAndVisible];
+//            [self.window makeKeyAndVisible];
         }else{
-            [self showMainView];
+            if ([[MySingleton sharedSingleton] isStateDictExist]) {
+                [self showMainView];
+            }else{
+                [self showRegisteView];
+            }
         }
     }else{
         [self showRegisteView];
@@ -107,10 +110,11 @@
 //#ifdef __IPHONE_7_0
 //    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
 //        [application setStatusBarStyle:UIStatusBarStyleLightContent];
-//        self.window.clipsToBounds =YES;
-//        self.window.frame =  CGRectMake(0,20,self.window.frame.size.width,self.window.frame.size.height-20);
-//        
-//        self.window.bounds = CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height);
+////        self.window.clipsToBounds =YES;
+////        self.window.backgroundColor = [UIColor whiteColor];
+////        self.window.frame =  CGRectMake(0,20,self.window.frame.size.width,self.window.frame.size.height-20);
+////        
+////        self.window.bounds = CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.height);
 //    }
 //#endif
     
@@ -515,11 +519,12 @@
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
         
         if ((int)response.statusCode == 0) {//授权成功
-//            [MySingleton sharedSingleton].wbUserId = [(WBAuthorizeResponse *)response userID];
+            [MySingleton sharedSingleton].wbUserId = [(WBAuthorizeResponse *)response userID];
             
             //发送授权成功通知
             [userInfo setObject:@"succeed" forKey:@"result"];
             [userInfo setObject:[(WBAuthorizeResponse *)response userID] forKey:@"wbUserId"];
+            [userInfo setObject:response.requestUserInfo forKey:@"wbUserInfo"];
             
         }else{//授权失败
             //TODO:

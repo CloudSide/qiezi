@@ -362,7 +362,8 @@
     self.picker = picker;
     [picker release];
     
-    [self presentModalViewController:self.picker animated:YES];
+//    [self presentModalViewController:self.picker animated:YES];
+    [self presentViewController:self.picker animated:YES completion:nil];
 }
 
 #pragma mark - save image video method 
@@ -566,12 +567,14 @@
         [self saveVideo:videoURL];
     }
     
-    [picker dismissModalViewControllerAnimated:YES];
+//    [picker dismissModalViewControllerAnimated:YES];
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)imagePickerControllerDIdCancel:(UIImagePickerController*)picker
 {
-    [picker dismissModalViewControllerAnimated:YES];
+//    [picker dismissModalViewControllerAnimated:YES];
+    [picker dismissViewControllerAnimated:YES completion:nil];
     
 }
 
@@ -710,7 +713,13 @@
 
 #pragma mark - UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    [self addSomeElements:viewController];
+    
+#ifndef __IPHONE_7_0
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        [self addSomeElements:viewController];
+    }
+#endif
+
 }
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{

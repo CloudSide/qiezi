@@ -10,5 +10,5 @@
 
 @interface DeviceUtil : NSObject
 
-+ (NSString *)getMacAddress;//获取设备Mac地址
++ (NSString *)getMacAddress;//现在为获取微博userid  //获取设备Mac地址
 @end
